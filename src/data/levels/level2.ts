@@ -1,91 +1,164 @@
-import type { Level } from '../../types/game';
+import type { LevelConfig } from '@/shared/types';
 
-export const LEVEL_2: Level = {
-  id: '2',
-  level_number: 2,
-  grid_layout: {
-    columns: ['A', 'B', 'C', 'D'],
-    rows: [1, 2],
-    maxColumns: 4,
-    maxRows: 2
-  },
-  evil_count: 3,
-  complexity: 2,
+export const level2: LevelConfig = {
+  id: 2,
+  gridSize: { rows: 3, cols: 3 },
+  startPosition: 'A1',
+  impostorCount: 1,
   characters: [
     {
+      id: 'A1',
       position: 'A1',
-      name: 'Emma',
-      identity: { isEvil: true, isRevealed: false },
-      clue: {
-        text: 'The market seems busier than usual lately.',
-        isUsed: false,
-        isEffective: false
+      name: '小明',
+      state: 'revealed',
+      identity: {
+        isImpostor: false,
+        isRevealed: true
       },
-      visual: {
-        avatar: '/avatars/character5.png',
-        background: 'market',
-        profession: 'Merchant'
+      clue: {
+        text: 'C3位置的一定是好人，他是我同事给我买过咖啡',
+        type: 'direct',
+        targetPosition: 'C3',
+        isUsed: false
       }
     },
     {
-      position: 'B1',
-      name: 'Frank',
-      identity: { isEvil: false, isRevealed: false },
-      clue: {
-        text: 'I heard strange noises from the tavern last night.',
-        isUsed: false,
-        isEffective: true
-      },
-      visual: {
-        avatar: '/avatars/character6.png',
-        background: 'house',
-        profession: 'Guard'
-      }
-    },
-    {
-      position: 'C1',
-      name: 'Grace',
-      identity: { isEvil: true, isRevealed: false },
-      clue: {
-        text: 'Nothing unusual to report.',
-        isUsed: false,
-        isEffective: false
-      },
-      visual: {
-        avatar: '/avatars/character7.png',
-        background: 'tavern',
-        profession: 'Barmaid'
-      }
-    },
-    {
-      position: 'D1',
-      name: 'Henry',
-      identity: { isEvil: false, isRevealed: false },
-      clue: {
-        text: 'Emma and Grace were whispering in the corner.',
-        isUsed: false,
-        isEffective: true
-      },
-      visual: {
-        avatar: '/avatars/character8.png',
-        background: 'library',
-        profession: 'Scholar'
-      }
-    },
-    {
+      id: 'A2',
       position: 'A2',
-      name: 'Isabel',
-      identity: { isEvil: true, isRevealed: false },
-      clue: {
-        text: 'The town is perfectly safe.',
-        isUsed: false,
-        isEffective: false
+      name: '阿华',
+      state: 'initial',
+      identity: {
+        isImpostor: false,
+        isRevealed: false
       },
-      visual: {
-        avatar: '/avatars/character9.png',
-        background: 'house',
-        profession: 'Noble'
+      clue: {
+        text: 'B2的邻居里一定有坏人',
+        type: 'neighbor',
+        targetPosition: 'B2',
+        isUsed: false
+      }
+    },
+    {
+      id: 'A3',
+      position: 'A3',
+      name: '小薇',
+      state: 'initial',
+      identity: {
+        isImpostor: false,
+        isRevealed: false
+      },
+      clue: {
+        text: 'C1和我一起工作，他很老实',
+        type: 'relation',
+        targetPosition: 'C1',
+        isUsed: false
+      }
+    },
+    {
+      id: 'B1',
+      position: 'B1',
+      name: '建国',
+      state: 'initial',
+      identity: {
+        isImpostor: false,
+        isRevealed: false
+      },
+      clue: {
+        text: 'A排的人都是好人',
+        type: 'area',
+        targetArea: 'A',
+        isUsed: false
+      }
+    },
+    {
+      id: 'B2',
+      position: 'B2',
+      name: '丽丽',
+      state: 'initial',
+      identity: {
+        isImpostor: false,
+        isRevealed: false
+      },
+      clue: {
+        text: 'C2最近表现很奇怪',
+        type: 'direct',
+        targetPosition: 'C2',
+        isUsed: false
+      }
+    },
+    {
+      id: 'B3',
+      position: 'B3',
+      name: '阿强',
+      state: 'initial',
+      identity: {
+        isImpostor: true,  // 坏人
+        isRevealed: false
+      },
+      clue: {
+        text: '我觉得C1有问题',
+        type: 'deception',
+        targetPosition: 'C1',
+        isUsed: false
+      }
+    },
+    {
+      id: 'C1',
+      position: 'C1',
+      name: '小云',
+      state: 'initial',
+      identity: {
+        isImpostor: false,
+        isRevealed: false
+      },
+      clue: {
+        text: 'A3说得对，我们经常一起工作',
+        type: 'relation',
+        targetPosition: 'A3',
+        isUsed: false
+      }
+    },
+    {
+      id: 'C2',
+      position: 'C2',
+      name: '阿美',
+      state: 'initial',
+      identity: {
+        isImpostor: false,
+        isRevealed: false
+      },
+      clue: {
+        text: 'B3最近总是鬼鬼祟祟的',
+        type: 'direct',
+        targetPosition: 'B3',
+        isUsed: false
+      }
+    },
+    {
+      id: 'C3',
+      position: 'C3',
+      name: '大壮',
+      state: 'initial',
+      identity: {
+        isImpostor: false,
+        isRevealed: false
+      },
+      clue: {
+        text: '我和A1经常一起喝咖啡',
+        type: 'relation',
+        targetPosition: 'A1',
+        isUsed: false
       }
     }
-  ]
-};
+  ],
+  clueFlow: {
+    steps: [
+      {
+        round: 1,
+        fromPosition: 'A1',
+        clueType: 'direct',
+        targetInfo: { position: 'C3' }
+      }
+    ]
+  }
+}; 

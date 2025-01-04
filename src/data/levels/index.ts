@@ -1,8 +1,13 @@
-import { LEVEL_1 } from './level1';
-import { LEVEL_2 } from './level2';
+import { level1 } from './level1';
+import { level2 } from './level2';
 
-// Local levels data
-export const LOCAL_LEVELS = {
-  1: LEVEL_1,
-  2: LEVEL_2,
-} as const;
+if (!level1 || !level2) {
+  console.error('关卡数据加载失败');
+}
+
+export const levels = [level1, level2];
+
+// 用于调试
+console.log('关卡数据:', levels);
+
+export { level1, level2 };
