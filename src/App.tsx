@@ -1,53 +1,33 @@
-import { useEffect, useState } from 'react';
-import { useUserStore, useGameStore } from '@/store';
-import { UserNameModal } from '@/features/user/components/UserNameModal';
+import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import { GameLayout } from '@/features/game/components/GameLayout';
+import { GameHeader } from '@/features/game/components/GameHeader';
+import { JudgeControls } from '@/features/game/components/JudgeControls';
+import { GameResultModal } from '@/features/game/components/GameResultModal';
+import { useStore } from '@/providers/StoreProvider';
+import { levels } from '@/data/levels/index';
 
-export const App = () => {
-  const { currentUser, register, login } = useUserStore();
-  const { isComplete, levelNumber } = useGameStore();
-  const [showNameModal, setShowNameModal] = useState(false);
-  const [modalMode, setModalMode] = useState<'register' | 'login'>('register');
+export const App = observer(() => {
+  const { gameStore } = useStore();
 
-  // 检查是否需要显示名字输入
   useEffect(() => {
-    if (isComplete && levelNumber === 1 && !currentUser) {
-      setModalMode('register');
-      setShowNameModal(true);
+    if (!gameStore.currentLevel) {
+      gameStore.initLevel(levels[0]);
     }
-  }, [isComplete, levelNumber, currentUser]);
+  }, [gameStore]);
 
-  const handleNameSubmit = async (name: string) => {
-    try {
-      if (modalMode === 'register') {
-        await register(name);
-      } else {
-        const success = await login(name);
-        if (!success) {
-          // 如果登录失败，切换到注册模式
-          setModalMode('register');
-          return;
-        }
-      }
-      setShowNameModal(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  if (!gameStore.currentLevel) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* 游戏主界面 */}
-      <main className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-100">
+      <GameHeader />
+      <main className="container mx-auto p-4 pt-20">
         <GameLayout />
       </main>
-
-      {/* 用户名输入弹窗 */}
-      <UserNameModal
-        isOpen={showNameModal}
-        mode={modalMode}
-        onSubmit={handleNameSubmit}
-      />
+      <JudgeControls />
+      <GameResultModal />
     </div>
   );
-};
+});

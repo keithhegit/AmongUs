@@ -24,20 +24,17 @@ export interface Character {
   id: string;
   position: string;
   name: string;
-  gender: 'male' | 'female';
+  state: 'initial' | 'revealed' | 'completed';
   identity: {
     isImpostor: boolean;
     isRevealed: boolean;
   };
   clue: {
     text: string;
+    type: 'direct' | 'neighbor' | 'area' | 'relation' | 'deception';
+    targetPosition?: string;
+    targetArea?: string;
     isUsed: boolean;
-    isEffective: boolean;
-  };
-  visual: {
-    emoji: string;
-    profession?: string;
-    background: string;
   };
 }
 
@@ -85,4 +82,26 @@ export enum GameStatus {
   PAUSED = 'paused',
   COMPLETE = 'complete',
   FAILED = 'failed'
+}
+
+export interface LevelConfig {
+  id: number;
+  gridSize: {
+    rows: number;
+    cols: number;
+  };
+  startPosition: string;
+  impostorCount: number;
+  characters: Character[];
+  clueFlow: {
+    steps: {
+      round: number;
+      fromPosition: string;
+      clueType: 'direct' | 'neighbor' | 'area' | 'relation';
+      targetInfo: {
+        position?: string;
+        area?: string;
+      };
+    }[];
+  };
 }

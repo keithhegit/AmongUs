@@ -1,164 +1,113 @@
+import { ClueUtils } from '@/utils/clueUtils';
 import type { LevelConfig } from '@/shared/types';
 
 export const level2: LevelConfig = {
   id: 2,
-  gridSize: { rows: 3, cols: 3 },
+  gridSize: { rows: 2, cols: 3 },
   startPosition: 'A1',
   impostorCount: 1,
   characters: [
     {
-      id: 'A1',
+      id: 'char_A1',
       position: 'A1',
-      name: '小明',
-      state: 'revealed',
-      identity: {
-        isImpostor: false,
-        isRevealed: true
-      },
-      clue: {
-        text: 'C3位置的一定是好人，他是我同事给我买过咖啡',
-        type: 'direct',
-        targetPosition: 'C3',
-        isUsed: false
-      }
-    },
-    {
-      id: 'A2',
-      position: 'A2',
-      name: '阿华',
+      name: '小智',
       state: 'initial',
       identity: {
         isImpostor: false,
         isRevealed: false
       },
       clue: {
-        text: 'B2的邻居里一定有坏人',
-        type: 'neighbor',
-        targetPosition: 'B2',
-        isUsed: false
-      }
-    },
-    {
-      id: 'A3',
-      position: 'A3',
-      name: '小薇',
-      state: 'initial',
-      identity: {
-        isImpostor: false,
-        isRevealed: false
-      },
-      clue: {
-        text: 'C1和我一起工作，他很老实',
-        type: 'relation',
-        targetPosition: 'C1',
-        isUsed: false
-      }
-    },
-    {
-      id: 'B1',
-      position: 'B1',
-      name: '建国',
-      state: 'initial',
-      identity: {
-        isImpostor: false,
-        isRevealed: false
-      },
-      clue: {
-        text: 'A排的人都是好人',
+        text: '我有B1、A2、B2都是我领居，我的右边和下边都是好人',
         type: 'area',
-        targetArea: 'A',
+        targetPosition: 'B1',
+        highlightNames: [],
         isUsed: false
       }
     },
     {
-      id: 'B2',
-      position: 'B2',
-      name: '丽丽',
+      id: 'char_B1',
+      position: 'B1',
+      name: '小丽',
       state: 'initial',
       identity: {
         isImpostor: false,
         isRevealed: false
       },
       clue: {
-        text: 'C2最近表现很奇怪',
-        type: 'direct',
-        targetPosition: 'C2',
-        isUsed: false
-      }
-    },
-    {
-      id: 'B3',
-      position: 'B3',
-      name: '阿强',
-      state: 'initial',
-      identity: {
-        isImpostor: true,  // 坏人
-        isRevealed: false
-      },
-      clue: {
-        text: '我觉得C1有问题',
-        type: 'deception',
+        text: '斜角也算邻居（比如A1和B2是邻居）',
+        type: 'area',
         targetPosition: 'C1',
+        highlightNames: [],
         isUsed: false
       }
     },
     {
-      id: 'C1',
+      id: 'char_C1',
       position: 'C1',
-      name: '小云',
+      name: '小红',
       state: 'initial',
       identity: {
         isImpostor: false,
         isRevealed: false
       },
       clue: {
-        text: 'A3说得对，我们经常一起工作',
-        type: 'relation',
-        targetPosition: 'A3',
+        text: '当每个人都被询问过，就通关啦',
+        type: 'behavior',
+        targetPosition: 'A2',
+        highlightNames: [],
         isUsed: false
       }
     },
     {
-      id: 'C2',
-      position: 'C2',
-      name: '阿美',
+      id: 'char_A2',
+      position: 'A2',
+      name: '张三',
       state: 'initial',
       identity: {
         isImpostor: false,
         isRevealed: false
       },
       clue: {
-        text: 'B3最近总是鬼鬼祟祟的',
+        text: '我举报小樱是坏蛋记得换成抓捕模式',
         type: 'direct',
-        targetPosition: 'B3',
+        targetPosition: 'B2',
+        highlightNames: ['小樱'],
         isUsed: false
       }
     },
     {
-      id: 'C3',
-      position: 'C3',
-      name: '大壮',
+      id: 'char_B2',
+      position: 'B2',
+      name: '小樱',
+      state: 'initial',
+      identity: {
+        isImpostor: true,
+        isRevealed: false
+      },
+      clue: {
+        text: '该死是谁告的密!',
+        type: 'behavior',
+        targetPosition: 'C2',
+        highlightNames: [],
+        isUsed: false
+      }
+    },
+    {
+      id: 'char_C2',
+      position: 'C2',
+      name: '李四',
       state: 'initial',
       identity: {
         isImpostor: false,
         isRevealed: false
       },
       clue: {
-        text: '我和A1经常一起喝咖啡',
-        type: 'relation',
+        text: '你简直就是福尔摩斯再世!',
+        type: 'behavior',
         targetPosition: 'A1',
+        highlightNames: [],
         isUsed: false
       }
     }
-  ],
-  clueFlow: {
-    steps: [
-      {
-        round: 1,
-        fromPosition: 'A1',
-        clueType: 'direct',
-        targetInfo: { position: 'C3' }
-      }
-    ]
-  }
+  ]
 }; 

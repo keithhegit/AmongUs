@@ -1,0 +1,54 @@
+{
+  "badClues": [
+    {
+      "id": "b1",
+      "text": "随地吐痰",
+      "type": "behavior"
+    },
+    {
+      "id": "b2",
+      "text": "恶意刹车",
+      "type": "behavior"
+    },
+    {
+      "id": "b3",
+      "text": "打游戏挂机",
+      "type": "behavior"
+    },
+    {
+      "id": "b4",
+      "text": "顺手牵羊",
+      "type": "crime"
+    },
+    {
+      "id": "b5",
+      "text": "我什么都不知道",
+      "type": "suspicious"
+    },
+    {
+      "id": "b6",
+      "text": "一口8个瑞士卷",
+      "type": "behavior"
+    },
+    {
+      "id": "b7",
+      "text": "坐高铁大声外放短视频",
+      "type": "behavior"
+    },
+    {
+      "id": "b8",
+      "text": "被抓到在商店零元购",
+      "type": "crime"
+    },
+    {
+      "id": "b9",
+      "text": "偷电瓶",
+      "type": "crime"
+    },
+    {
+      "id": "b10",
+      "text": "我供出同伙，能少判我点吗",
+      "type": "suspicious"
+    }
+  ]
+} 

@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import type { Character } from '@/shared/types';
-import { characterGenerator } from '@/features/game/utils/generators/characterGenerator';
+import { levelGenerator } from '@/features/game/utils/generators/levelGenerator';
+import { LOCAL_LEVELS, regenerateLevels } from '@/data/levels/index';
+import { useLevelStore } from '@/store/level/levelStore';
 
 interface GameState {
   // 游戏状态
@@ -8,7 +10,6 @@ interface GameState {
   characters: Character[];
   mistakes: number;
   isComplete: boolean;
-  timeLimit: number;
   elapsedTime: number;
   impostorsFound: number;
   totalImpostors: number;
@@ -23,6 +24,7 @@ interface GameState {
   selectCharacter: (characterId: string | null) => void;
   submitVote: (characterId: string) => void;
   resetLevel: () => void;
+  resetAllLevels: () => void;
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -31,7 +33,6 @@ export const useGameStore = create<GameState>((set, get) => ({
   characters: [],
   mistakes: 0,
   isComplete: false,
-  timeLimit: 300,
   elapsedTime: 0,
   impostorsFound: 0,
   totalImpostors: 0,
@@ -41,31 +42,28 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   // 动作实现
   initLevel: (levelNumber) => {
+    if (!levelNumber) {
+      console.error('Invalid level number');
+      return;
+    }
+
     console.log('Initializing level:', levelNumber);
     
-    // 根据关卡计算网格大小和坏人数量
-    const gridSize = Math.min(3 + Math.floor(levelNumber / 5), 5);
-    const impostorCount = Math.min(1 + Math.floor(levelNumber / 3), 4);
+    const levelConfig = LOCAL_LEVELS[levelNumber];
+    if (!levelConfig) {
+      console.error('Level not found:', levelNumber);
+      return;
+    }
     
-    // 生成角色
-    const characters = characterGenerator.generateCharacters(
-      gridSize * gridSize,
-      impostorCount,
-      { rows: gridSize, cols: gridSize }
-    );
-    
-    console.log('Generated characters:', characters);
-
     // 更新状态
     set({
       currentLevel: levelNumber,
-      characters,
+      characters: levelConfig.characters,
       mistakes: 0,
       isComplete: false,
-      timeLimit: 300,
       elapsedTime: 0,
       impostorsFound: 0,
-      totalImpostors: impostorCount,
+      totalImpostors: levelConfig.impostorCount,
       revealedCharacters: [],
       currentVoteType: 'good',
       selectedCharacter: null
@@ -120,11 +118,22 @@ export const useGameStore = create<GameState>((set, get) => ({
       updatedState.mistakes >= 3
     ) {
       set({ isComplete: true });
+      
+      // 如果成功通关，解锁下一关
+      if (updatedState.impostorsFound >= updatedState.totalImpostors) {
+        const nextLevel = updatedState.currentLevel + 1;
+        useLevelStore.getState().unlockLevel(nextLevel);
+      }
     }
   },
 
   resetLevel: () => {
     const state = get();
     get().initLevel(state.currentLevel);
+  },
+
+  resetAllLevels: () => {
+    const newLevels = regenerateLevels();
+    // 可以在这里添加重置后的其他逻辑
   }
 })); 
