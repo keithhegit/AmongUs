@@ -1,305 +1,272 @@
-# Among Us PWA - 谁是大卧底
+# Among Us
 
-一个基于 React + TypeScript + Vite 构建的 PWA 游戏。
+## 游戏规则
 
-## 游戏介绍
-
-《谁是大卧底》是一个推理类游戏，玩家需要通过收集线索，分析角色行为，找出隐藏在人群中的卧底。
-
-### 核心玩法
-- 每个关卡包含多个角色，其中隐藏着若干卧底
-- 玩家通过收集和分析线索来推理卧底身份
-- 线索系统包含：位置信息、行为特征、人际关系等
-- 玩家需要在限定时间内完成推理
-- 错误的指认会降低评分
-
-### 难度系统
-- Easy: 9个角色，1个卧底，简单线索
-- Medium: 12个角色，2个卧底，复杂线索
-- Hard: 16个角色，3个卧底，混淆线索
-
-## 项目结构
-
-```
-src/
-├── features/           # 功能模块
-│   ├── game/          # 游戏核心功能
-│   │   ├── components/    # 游戏相关组件
-│   │   │   ├── CharacterGrid.tsx  # 角色网格
-│   │   │   ├── CharacterCard.tsx  # 角色卡片
-│   │   │   └── GameLayout.tsx     # 游戏布局
-│   │   ├── utils/         # 游戏工具函数
-│   │   │   ├── generators/    # 生成器
-│   │   │   │   ├── levelGenerator.ts
-│   │   │   │   └── clueGenerator.ts
-│   │   │   └── gameUtils.ts   # 游戏核心工具
-│   ├── user/          # 用户相关功能
-│   │   └── components/
-│   │       └── UserNameModal.tsx  # 用户名输入弹窗
-├── shared/            # 共享资源
-│   ├── utils/        # 通用工具
-│   │   ├── gridHelper.ts  # 网格助手
-│   │   └── clueUtils.ts   # 线索工具
-│   └── types/        # 类型定义
-│       ├── game.ts   # 游戏相关类型
-│       ├── user.ts   # 用户相关类型
-│       └── level.ts  # 关卡相关类型
-└── store/            # 状态管理
-    ├── game/         # 游戏状态
-    │   ├── gameStore.ts
-    │   └── progressStore.ts
-    ├── user/         # 用户状态
-    │   └── userStore.ts
-    └── index.ts      # 状态统一导出
-```
-
-## 最新功能更新
-
-### 1. 用户系统
-- 新增用户注册/登录功能
-- 添加进度保存系统
-- 实现多用户数据隔离
-
-### 2. 关卡系统
-- 实现关卡解锁机制
-- 添加星级评价系统
-- 关卡进度持久化
-
-### 3. 游戏核心优化
-- 改进角色生成算法
-- 优化线索系统
-- 添加动画效果
-
-## 核心功能说明
-
-### 用户系统
-```typescript
-interface UserProfile {
-  id: string;
-  name: string;
-  createdAt: number;
-  lastLoginAt: number;
-}
-
-interface UserProgress {
-  userId: string;
-  levelStatuses: Record<number, LevelStatus>;
-  totalCoins: number;
-  achievements: string[];
-}
-```
+### 基础规则
+- 每局游戏包含多个角色，其中有少数内鬼和多数船员
+- 玩家需要通过收集线索，正确找出所有内鬼
+- 每局游戏有3次判断错误的机会
+- 需要找出所有内鬼且翻开所有卡片才能获胜
 
 ### 关卡系统
+1. **关卡解锁条件**
+   - 第1-10关：完成上一关后自动解锁，无金币要求
+   - 第11关起：需要满足金币要求
+     - 第11关：需要100金币
+     - 第12关：需要200金币
+     - 第13关：需要300金币
+     - 以此类推...
+
+2. **关卡奖励**
+   - 每次正确判断：+10金币
+   - 完美通关(无失误)：额外+20金币
+   - 观看广告：双倍金币奖励
+
+3. **关卡进度**
+   - 进度保存：自动保存已解锁的关卡和获得的金币
+   - 重玩机制：已解锁的关卡可以随时重玩
+   - 进度显示：顶部显示当前关卡进度(X/Y)和累计金币数
+
+### 网格布局
+- 游戏使用 3x3 的网格布局
+- 网格按照以下方式排序:
+  ```
+  A1 B1 C1  (第1行)
+  A2 B2 C2  (第2行)
+  A3 B3 C3  (第3行)
+  ```
+- 位置编码规则：
+  - 列名使用英文字母（A、B、C）
+  - 行号使用数字（1、2、3）
+  - 例如：A1 表示第一行第一列，B2 表示第二行第二列
+
+### 角色排序逻辑
 ```typescript
-interface LevelStatus {
-  id: number;
-  isUnlocked: boolean;
-  isCompleted: boolean;
-  stars: number;        // 星级评价 0-3
-  bestScore: number;    // 最高分
-  bestTime: number;     // 最佳时间
-}
+characters.sort((a, b) => {
+  const posA = a.position;
+  const posB = b.position;
+  return posA.localeCompare(posB);
+});
 ```
-
-### 状态管理
-- 使用 Zustand 进行状态管理
-- 实现数据持久化
-- 支持多状态协同
-
-### 线索系统
-```typescript
-enum ClueType {
-  LOCATION = 'location',     // 位置线索
-  BEHAVIOR = 'behavior',     // 行为线索
-  RELATION = 'relation',     // 关系线索
-  PROFESSION = 'profession', // 职业线索
-  TESTIMONY = 'testimony',   // 证词线索
-  REACTION = 'reaction',     // 反应线索
-  SYSTEM = 'system'         // 系统线索
-}
-
-interface Clue {
-  id: string;
-  clue_id: string;
-  main_type: ClueType;
-  sub_type: string;
-  clue_text: string;
-  reliability: number;      // 可信度
-  complexity: number;       // 复杂度
-  is_template: boolean;
-  variables: string[];
-}
-```
-
-### 角色系统
-```typescript
-interface Character {
-  id: string;
-  position: string;
-  name: string;
-  gender: 'male' | 'female';
-  identity: {
-    isImpostor: boolean;
-    isRevealed: boolean;
-  };
-  clue: {
-    text: string;
-    isUsed: boolean;
-    isEffective: boolean;
-  };
-  visual: {
-    emoji: string;
-    profession?: string;
-    background: string;
-  };
-}
-```
-
-### 评分系统
-```typescript
-interface ScoreSystem {
-  baseScore: number;        // 基础分数
-  timeBonus: number;        // 时间奖励
-  accuracyBonus: number;    // 准确率奖励
-  mistakePenalty: number;   // 错误惩罚
-  
-  calculateFinalScore(): number;
-  calculateStars(): number; // 0-3星评价
-}
-```
-
-## 开发指南
-
-### 环境要求
-- Node.js >= 16
-- npm >= 8
-
-### 安装依赖
-```bash
-npm install
-```
-
-### 开发服务器
-```bash
-npm run dev
-```
-
-### 构建
-```bash
-npm run build
-```
-
-## 游戏逻辑
-
-### 角色系统
-- 角色生成与属性分配
-- 身份系统（好人/坏人）
-- 线索系统
 
 ### 游戏流程
-1. 选择关卡
-2. 查看角色信息
-3. 收集线索
-4. 进行投票
-5. 结算得分
+1. 游戏开始时，随机一个好人角色被揭示
+2. 玩家可以通过点击角色查看其线索
+3. 根据线索判断角色身份（好人/坏人）
+4. 正确判断可以继续游戏，错误判断会增加失误计数
+5. 找出所有坏人即可通关
 
-### 分数系统
-- 基础分数计算
-- 时间奖励
-- 错误惩罚
+## 开发说明
 
-## 技术栈
+### 位置系统
+- 使用字母+数字的组合表示位置（如 A1、B2、C3）
+- 字母表示列（从左到右：A、B、C）
+- 数字表示行（从上到下：1、2、3）
+- 位置编码在角色数据和线索系统中广泛使用
 
-- React 18
-- TypeScript 5
-- Vite 5
-- TailwindCSS
-- Framer Motion
-- Zustand
+### 注意事项
+- 确保角色数据的 position 属性符合编码规则
+- 网格渲染时需要按照行列顺序排序
+- 线索系统中的位置引用需要与网格位置对应
 
-### 状态管理架构
+## 游戏核心机制
+
+### 1. 线索推进机制
+
+每局游戏（以9人为例）的线索推进：
+
+1. 开局状态：
+   - A2位置角色处于好人状态（已开启）
+   - 其他8个位置都是未开启状态
+   - 只有1个坏人，位置未知
+
+2. 线索类型：
+   ```typescript
+   type ClueType = 
+     | '直接信任' // "C3是好人，他帮过我"
+     | '邻居提示' // "B2的邻居里有坏人"
+     | '区域排除' // "A区的都是好人"
+     | '关系证明' // "我和C1共事多年"
+   ```
+
+3. 线索推进示例：
+   ```
+   第1轮：A2(开局好人) → "C3是好人，他帮过我"
+   第2轮：C3(被点开) → "B2的邻居里有坏人"
+   第3轮：B1(被点开) → "A排没有坏人"
+   第4轮：B2(被点开) → "C1和我一起工作"
+   第5轮：C1(被点开) → "A3很老实"
+   第6轮：A3(被点开) → "C2不可能是坏人"
+   第7轮：C2(被点开) → "只有B3很可疑"
+   最终：B3被确认是坏人
+   ```
+
+### 2. 游戏循环
+
+1. 阅读当前线索
+2. 分析可能性：
+   - 直接信任：确认好人
+   - 邻居提示：缩小范围
+   - 区域排除：排除选项
+   - 关系证明：建立联系
+3. 选择下一个要点开的角色
+4. 获取新线索
+5. 重复步骤1-4直到：
+   - 收集足够线索
+   - 排除所有其他可能
+   - 确定坏人位置
+
+### 3. 线索生成规则
+
+```typescript
+interface ClueConfig {
+  round: number;        // 第几轮线索
+  fromPosition: string; // 从哪个位置给出
+  clueType: ClueType;   // 线索类型
+  targetInfo: {
+    position?: string;  // 指向位置
+    area?: string;      // 指向区域
+    neighbors?: string; // 邻居范围
+  };
+}
+
+// 示例：生成第一轮线索
+function generateFirstClue(): ClueConfig {
+  return {
+    round: 1,
+    fromPosition: 'A2',
+    clueType: '直接信任',
+    targetInfo: {
+      position: 'C3'
+    }
+  };
+}
+
+// 示例：生成中间轮线索
+function generateMiddleClue(round: number): ClueConfig {
+  return {
+    round: round,
+    fromPosition: 'B2',
+    clueType: '邻居提示',
+    targetInfo: {
+      neighbors: 'B2'
+    }
+  };
+}
 ```
-Store/
-├── gameStore      # 游戏核心状态
-│   ├── 角色状态
-│   ├── 线索状态
-│   └── 游戏进度
-├── userStore      # 用户状态
-│   ├── 用户信息
-│   ├── 游戏存档
-│   └── 成就记录
-└── progressStore  # 进度状态
-     ├── 关卡解锁
-     ├── 星级评价
-     └── 最佳记录
+
+### 4. 状态转换系统
+
+```typescript
+type CharacterState = 'initial' | 'revealed' | 'completed';
+
+interface StateTransition {
+  from: CharacterState;
+  to: CharacterState;
+  trigger: 'click' | 'reveal' | 'complete';
+  condition: {
+    isImpostor: boolean;
+    hasBeenRevealed: boolean;
+  };
+}
+
+const stateTransitions: StateTransition[] = [
+  {
+    from: 'initial',
+    to: 'revealed',
+    trigger: 'click',
+    condition: { isImpostor: false, hasBeenRevealed: false }
+  },
+  {
+    from: 'revealed',
+    to: 'completed',
+    trigger: 'complete',
+    condition: { isImpostor: true, hasBeenRevealed: true }
+  }
+];
 ```
 
-### 数据持久化
-- 使用 localStorage 存储用户数据
-- 使用 zustand/persist 中间件
-- 支持多用户数据隔离
+## 关卡设计
 
-### 动画系统
-- 使用 Framer Motion
-- 支持关卡切换动画
-- 支持角色翻转动画
-- 支持线索显示动画
+### 第一关
+- 起始位置：A1
+- 坏人数量：1 (B2)
+- 线索链：
+  1. A1 -> B1：提示邻居关系
+  2. B1 -> C1：提示斜角邻居
+  3. C1 -> A2：提示通关条件
+  4. A2 -> B2(坏人)：举报线索
+  5. B2(坏人) -> C2：随机线索
+  6. C2 -> C3：结束语
 
-## 项目规范
+### 第二关
+- 起始位置：A1
+- 坏人数量：1 (B2)
+- 线索链：
+  1. A1 -> B1：说明邻居规则
+  2. B1 -> C1：斜角邻居提示
+  3. C1 -> A2：通关条件提示
+  4. A2 -> B2(坏人)：举报线索
+  5. B2(坏人) -> C2：随机线索
+  6. C2 -> C3：结束语
 
-### 代码风格
-- 使用 TypeScript 严格模式
-- 遵循 ESLint 规则
-- 使用 Prettier 格式化
+### 第三关
+- 起始位置：A1
+- 坏人数量：4 (B1, C2, A2, B3)
+- 线索链：
+  1. A1 -> B1(坏人)：绑架事件线索
+  2. B1(坏人) -> C1：随机线索
+  3. C1 -> C2(坏人)：区域线索
+  4. C2(坏人) -> B2：随机线索
+  5. B2 -> A2(坏人)：钱包线索
+  6. A2(坏人) -> A3：随机线索
+  7. A3 -> B3(坏人)：震惊线索
+  8. B3(坏人) -> C3：随机线索
+  9. C3 -> B2：确认好人
 
-### 命名规范
-- 组件：PascalCase
-- 函数：camelCase
-- 类型：PascalCase
-- 文件：组件用 PascalCase，其他用 camelCase
+### 第四关
+- 起始位置：C1
+- 坏人数量：2 (A1, B2)
+- 线索链：
+  1. C1 -> A1(坏人)：邻居线索
+  2. A1(坏人) -> C2：随机线索
+  3. C2 -> B2(坏人)：区域线索
+  4. B2(坏人) -> B1：偷电瓶线索
+  5. 其他角色提供补充线索
 
-### 提交规范
-- feat: 新功能
-- fix: 修复
-- docs: 文档更新
-- style: 代码格式
-- refactor: 重构
-- test: 测试
-- chore: 构建过程或辅助工具的变动
+### 第五关
+- 起始位置：C4
+- 坏人数量：3 (B2, C2, A4)
+- 网格大小：4x3
+- 职业分布：
+  - 警察：小泉(A1)、阿魔(C1)、阿星(C2)
+  - 医生：阿玉(A3)、阿智(B4)
+  - 路人：其他所有人
+- 线索链：
+  1. C4 -> B4：同团信息
+  2. B4 -> A4(坏人)：医生确认
+  3. A4(坏人) -> C3：随机线索
+  4. C3 -> B3：区域线索
+  5. B3 -> B2(坏人)：指认坏人
+  6. B2(坏人) -> C2(坏人)：随机线索
+  7. 其他角色提供补充线索
 
-## 后续计划
+特点：
+1. 首次引入职业属性
+2. 扩展为4x3网格
+3. 包含警察、医生等特殊身份
+4. 职业相关的线索判断
 
-1. 功能增强
-- [ ] 添加更多关卡类型
-- [ ] 实现成就系统
-- [ ] 添加社交功能
+### 线索类型说明
+- direct：直接指出某个角色的身份
+- area：描述某个区域或行列的情况
+- behavior：描述可疑行为
+- relation：描述角色间的关系
 
-2. 性能优化
-- [ ] 实现组件懒加载
-- [ ] 优化状态管理
-- [ ] 改进动画性能
+### 注意事项
+1. 好人只说真话，坏人说随机线索
+2. 每关开始时只显示起始位置的角色
+3. 需要按照线索链顺序推理
+4. 所有卡片翻开且找出所有坏人才能通关
 
-3. 用户体验
-- [ ] 添加新手引导
-- [ ] 优化移动端适配
-- [ ] 增加音效系统 
-
-## 开发路线图
-
-### 第一阶段 - 基础功能
-- [x] 角色生成系统
-- [x] 基础线索系统
-- [x] 关卡进度系统
-- [x] 用户数据持久化
-
-### 第二阶段 - 功能完善
-- [x] 高级线索系统
-- [x] 评分系统
-- [x] 动画效果
-- [ ] 成就系统
-
-### 第三阶段 - 体验优化
-- [ ] 新手引导
-- [ ] 音效系统
-- [ ] 社交功能
-- [ ] PWA 支持 
+[继续...] 
