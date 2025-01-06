@@ -3,15 +3,19 @@ import { level2 } from './level2';
 import { level3 } from './level3';
 import { level4 } from './level4';
 import { level5 } from './level5';
-import type { LevelConfig } from '@/shared/types';
+import { level6 } from './level6';
+import { level7 } from './level7';
+import type { LevelConfig } from '@/shared/types/game';
 
 export const levels: LevelConfig[] = [
   level1,
   level2,
   level3,
   level4,
-  level5
+  level5,
+  level6,
+  level7
 ];
 
-export { level1, level2, level3, level4, level5 };
+export { level1, level2, level3, level4, level5, level6, level7 };
 export default levels;

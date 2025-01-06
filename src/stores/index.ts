@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import type { Character, LevelConfig } from '@/shared/types';
+import type { Character, LevelConfig } from '@/shared/types/game';
 import { levels } from '@/data/levels';
 
 export class GameStore {
@@ -27,18 +27,24 @@ export class GameStore {
     }
     
     this.currentLevel = level;
-    this.characters = level.characters.map(char => ({
-      ...char,
-      state: char.position === level.startPosition ? 'revealed' : 'initial',
-      identity: {
-        ...char.identity,
-        isRevealed: char.position === level.startPosition
-      }
-    }));
+    this.characters = level.characters.map((char: Character) => {
+      const startPositions = Array.isArray(level.startPosition) 
+        ? level.startPosition 
+        : [level.startPosition];
+      
+      return {
+        ...char,
+        state: startPositions.includes(char.position) ? 'revealed' : 'initial',
+        identity: {
+          ...char.identity,
+          isRevealed: startPositions.includes(char.position)
+        }
+      };
+    });
     
     this.currentRound = 0;
     this.mistakeCount = 0;
-    this.revealedPositions = new Set([level.startPosition]);
+    this.revealedPositions = new Set(Array.isArray(level.startPosition) ? level.startPosition : [level.startPosition]);
     this.remainingImpostors = level.impostorCount;
     this.judgeMode = 'good';
     this.showResultModal = false;

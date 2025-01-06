@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
-import type { Character } from '@/shared/types';
+import type { Character } from '@/shared/types/game';
 import { cn } from '@/lib/utils';
 
 interface CharacterCardProps {
@@ -47,7 +47,7 @@ export const CharacterCard = observer(({
     <>
       <div 
         className={cn(
-          "relative w-[93.33px] h-[120px] p-2",  // 增加高度到120px
+          "relative w-[90px] h-[110px] p-2", // 减小卡片尺寸
           "bg-white rounded-lg shadow cursor-pointer transition-all",
           "hover:shadow-md hover:scale-105",
           isSelected && "ring-2 ring-blue-500",
@@ -63,28 +63,28 @@ export const CharacterCard = observer(({
         onTouchEnd={handleTouchEnd}
       >
         {/* 位置标识 - 左上角 */}
-        <div className="absolute top-1 left-1 text-xs font-medium text-gray-500">
+        <div className="absolute top-1 left-1 text-[10px] font-medium text-gray-500">
           {position}
         </div>
 
         {/* 身份标识 - 右上角 */}
         {state !== 'initial' && (
-          <div className="absolute top-1 right-1 text-lg">
+          <div className="absolute top-1 right-1 text-base">
             {identity.isImpostor ? '😈' : '😊'}
           </div>
         )}
 
-        {/* 角色名称 - 缩小20% */}
-        <div className="text-center mt-6">
-          <div className="text-[80%] font-medium">
+        {/* 角色名称 - 缩小字体 */}
+        <div className="text-center mt-4">
+          <div className="text-[70%] font-medium">
             {name}
           </div>
         </div>
 
-        {/* 线索气泡 - 自适应字体大小 */}
+        {/* 线索气泡 - 减小内边距和字体 */}
         {shouldShowClue && (
-          <div className="mt-2 p-1 bg-gray-50 rounded">
-            <div className="text-[clamp(8px,1.8vw,12px)] text-gray-600 line-clamp-3">
+          <div className="mt-1 p-[2px] bg-gray-50 rounded">
+            <div className="text-[clamp(8px,1.5vw,10px)] text-gray-600 line-clamp-3">
               {clue.text}
             </div>
           </div>

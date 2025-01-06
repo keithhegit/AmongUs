@@ -31,9 +31,10 @@ export interface Character {
   };
   clue: {
     text: string;
-    type: 'direct' | 'neighbor' | 'area' | 'relation' | 'deception';
+    type: 'direct' | 'neighbor' | 'area' | 'relation' | 'deception' | 'behavior';
     targetPosition?: string;
     targetArea?: string;
+    highlightNames: string[];
     isUsed: boolean;
   };
 }
@@ -90,7 +91,7 @@ export interface LevelConfig {
     rows: number;
     cols: number;
   };
-  startPosition: string;
+  startPosition: string | string[];
   impostorCount: number;
   characters: Character[];
   clueFlow: {

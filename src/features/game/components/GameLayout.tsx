@@ -1,14 +1,26 @@
 import { observer } from 'mobx-react-lite';
 import { CharacterCard } from './CharacterCard';
 import { useStore } from '@/providers/StoreProvider';
+import type { Character } from '@/shared/types/game';
 
 export const GameLayout = observer(() => {
   const { gameStore } = useStore();
   const { characters, handleCharacterClick } = gameStore;
 
+  if (!gameStore.currentLevel) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-xl text-gray-600">加载中...</div>
+      </div>
+    );
+  }
+
   if (!characters || characters.length === 0) {
-    console.log('No characters loaded');
-    return null;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-xl text-gray-600">没有角色数据</div>
+      </div>
+    );
   }
 
   // 重新排序角色
@@ -23,16 +35,16 @@ export const GameLayout = observer(() => {
   });
 
   return (
-    <div className="p-4">
+    <div className="p-2">
       {/* 游戏状态 */}
-      <div className="mb-6 text-center">
+      <div className="mb-4 text-center">
         <div className="text-lg font-medium text-gray-700">
           当前回合: {gameStore.currentRound + 1}
         </div>
       </div>
 
       {/* 角色网格 */}
-      <div className="grid grid-cols-3 gap-6 max-w-4xl mx-auto">
+      <div className="grid grid-cols-3 gap-3 max-w-4xl mx-auto">
         {sortedCharacters.map(character => (
           <CharacterCard
             key={character.id}

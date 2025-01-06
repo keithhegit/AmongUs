@@ -25,7 +25,7 @@ export interface LevelConfig {
     rows: number;
     cols: number;
   };
-  startPosition: string;
+  startPosition: string | string[];
   impostorCount: number;
   characters: Character[];
   clueFlow: {
