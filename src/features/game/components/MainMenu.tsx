@@ -1,18 +1,42 @@
-import { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/providers/StoreProvider';
 import { levels } from '@/data/levels';
-import { cn } from '@/lib/utils';
+import clsx from 'clsx';
+import mainBg from '../../../assets/images/main.png';
+import level1 from '../../../assets/images/levelcard/level1.png';
+import level2 from '../../../assets/images/levelcard/level2.png';
+import level3 from '../../../assets/images/levelcard/level3.png';
+import level4 from '../../../assets/images/levelcard/level4.png';
+import level5 from '../../../assets/images/levelcard/level5.png';
+import level6 from '../../../assets/images/levelcard/level6.png';
+import level7 from '../../../assets/images/levelcard/level7.png';
+import levelBottom from '../../../assets/images/levelbottom.png';
+import backBtn from '../../../assets/images/Triangle-Arrow-Turn-Backward.png';
+
+const levelCards = [
+  level1,
+  level2,
+  level3,
+  level4,
+  level5,
+  level6,
+  level7,
+];
 
 export const MainMenu = observer(() => {
   const navigate = useNavigate();
   const { gameStore } = useStore();
-  const [showLevels, setShowLevels] = useState(false);
+  const [showLevels, setShowLevels] = React.useState(false);
 
   const handleStartGame = () => {
-    gameStore.initLevel(levels[0]); // 初始化第一关
-    navigate('/game'); // 导航到游戏页面
+    gameStore.initLevel(levels[0]);
+    navigate('/game');
+  };
+
+  const handleSelectLevel = () => {
+    setShowLevels(true);
   };
 
   const handleLevelSelect = (levelIndex: number) => {
@@ -20,56 +44,141 @@ export const MainMenu = observer(() => {
     navigate('/game');
   };
 
+  const handleBackgroundClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setShowLevels(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-between py-8">
-      {/* Banner区域 */}
-      <div className="w-full max-w-md aspect-[390/256] bg-gray-300 mb-4">
-        {/* 这里放置Banner图片 */}
-      </div>
-
-      {/* 关卡列表 */}
-      {showLevels && (
-        <div className="w-full max-w-md px-4 mb-4">
-          <div className="grid grid-cols-3 gap-3">
-            {levels.map((level, index) => (
-              <button
-                key={level.id}
-                onClick={() => handleLevelSelect(index)}
-                className={cn(
-                  "p-4 rounded-lg shadow transition-all",
-                  "bg-white hover:bg-gray-50 active:bg-gray-100",
-                  "flex flex-col items-center justify-center gap-1"
-                )}
-              >
-                <span className="text-lg font-bold">关卡 {level.id}</span>
-                <span className="text-sm text-gray-500">
-                  {level.impostorCount} 个坏人
-                </span>
-              </button>
-            ))}
+    <div 
+      className="relative w-full h-[100dvh] overflow-hidden"
+      style={{
+        backgroundImage: `url(${mainBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      {/* Safe Area Container */}
+      <div className="relative w-full h-full max-w-[430px] mx-auto">
+        {/* Main Menu Buttons */}
+        {!showLevels && (
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-[140px] flex flex-col gap-[20px]">
+            {/* Start Game Button Area */}
+            <button 
+              onClick={handleStartGame}
+              className="w-[222px] h-[48px] cursor-pointer"
+            />
+            
+            {/* Select Level Button Area */}
+            <button 
+              onClick={handleSelectLevel}
+              className="w-[222px] h-[48px] cursor-pointer"
+            />
           </div>
-        </div>
-      )}
+        )}
 
-      {/* 按钮区域 */}
-      <div className="w-full max-w-md px-4 space-y-4">
-        <button
-          onClick={handleStartGame}
-          className="w-full py-4 bg-blue-500 text-white rounded-lg shadow-lg
-                   hover:bg-blue-600 active:bg-blue-700 transition-colors
-                   text-xl font-bold"
-        >
-          开始游戏
-        </button>
-        <button
-          onClick={() => setShowLevels(!showLevels)}
-          className="w-full py-4 bg-gray-500 text-white rounded-lg shadow-lg
-                   hover:bg-gray-600 active:bg-gray-700 transition-colors
-                   text-xl font-bold"
-        >
-          选择关卡
-        </button>
+        {/* Levels Grid (Conditional) */}
+        {showLevels && (
+          <div 
+            className="absolute inset-0"
+            onClick={handleBackgroundClick}
+          >
+            {/* Level Selection Background */}
+            <div 
+              className="absolute inset-x-0 top-0 bottom-0"
+              style={{
+                backgroundImage: `url(${levelBottom})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'top center',
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Back Button */}
+              <button
+                onClick={() => setShowLevels(false)}
+                className="absolute top-[40px] right-[20px] w-[60px] h-[40px] cursor-pointer"
+              >
+                <img 
+                  src={backBtn} 
+                  alt="Back"
+                  className="w-full h-full object-contain"
+                />
+              </button>
+
+              {/* Level Buttons Container */}
+              <div className="pt-[180px] px-[20px]">
+                {/* First Row */}
+                <div className="flex gap-[10px] mb-[15px]">
+                  {levelCards.slice(0, 3).map((cardImage, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleLevelSelect(index)}
+                      className="w-[110px] h-[85px] cursor-pointer"
+                    >
+                      <img 
+                        src={cardImage} 
+                        alt={`Level ${index + 1}`}
+                        className="w-full h-full object-contain"
+                      />
+                    </button>
+                  ))}
+                </div>
+                
+                {/* Second Row */}
+                <div className="flex gap-[10px] mb-[15px]">
+                  <button
+                    onClick={() => handleLevelSelect(3)}
+                    className="w-[110px] h-[85px] cursor-pointer"
+                  >
+                    <img 
+                      src={level4} 
+                      alt="Level 4"
+                      className="w-full h-full object-contain"
+                    />
+                  </button>
+                  <button
+                    onClick={() => handleLevelSelect(4)}
+                    className="w-[110px] h-[85px] cursor-pointer"
+                  >
+                    <img 
+                      src={level5} 
+                      alt="Level 5"
+                      className="w-full h-full object-contain"
+                    />
+                  </button>
+                  <button
+                    onClick={() => handleLevelSelect(5)}
+                    className="w-[110px] h-[85px] cursor-pointer"
+                  >
+                    <img 
+                      src={level6} 
+                      alt="Level 6"
+                      className="w-full h-full object-contain"
+                    />
+                  </button>
+                </div>
+
+                {/* Third Row */}
+                <div>
+                  <button
+                    onClick={() => handleLevelSelect(6)}
+                    className="w-[110px] h-[85px] cursor-pointer"
+                  >
+                    <img 
+                      src={level7} 
+                      alt="Level 7"
+                      className="w-full h-full object-contain"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
-}); 
+});
+
+export default MainMenu; 
