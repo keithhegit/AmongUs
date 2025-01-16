@@ -1,4 +1,17 @@
-# Among Us
+# Among Us PWA
+
+## 更新日志
+
+### UI优化 (2024-01-xx)
+- 优化主菜单界面布局
+  - 调整"开始游戏"和"选择关卡"按钮位置
+  - 移除底部黑色指示条
+- 重构关卡选择界面
+  - 添加蓝色背景和圆角设计
+  - 优化关卡卡片布局和间距
+  - 修正关卡卡片显示顺序
+  - 添加右上角返回按钮
+  - 支持点击空白区域返回主菜单
 
 ## 游戏规则
 
@@ -10,22 +23,26 @@
 
 ### 关卡系统
 1. **关卡解锁条件**
-   - 第1-10关：完成上一关后自动解锁，无金币要求
-   - 第11关起：需要满足金币要求
+   - 目前所有关卡完成上一关后自动解锁
+   - 【未上线功能】后续版本将加入金币解锁机制：
+     - 第11关起：需要满足金币要求
      - 第11关：需要100金币
      - 第12关：需要200金币
      - 第13关：需要300金币
      - 以此类推...
 
 2. **关卡奖励**
-   - 每次正确判断：+10金币
-   - 完美通关(无失误)：额外+20金币
-   - 观看广告：双倍金币奖励
+   - 【未上线功能】后续版本将加入金币奖励：
+     - 每次正确判断：+10金币
+     - 完美通关(无失误)：额外+20金币
+     - 观看广告：双倍金币奖励
 
 3. **关卡进度**
-   - 进度保存：自动保存已解锁的关卡和获得的金币
+   - 进度保存：自动保存已解锁的关卡
+   - 【未上线功能】后续版本将加入：
+     - 金币累计系统
+     - 进度显示：顶部显示当前关卡进度(X/Y)和累计金币数
    - 重玩机制：已解锁的关卡可以随时重玩
-   - 进度显示：顶部显示当前关卡进度(X/Y)和累计金币数
 
 ### 网格布局
 - 游戏使用 3x3 的网格布局
@@ -326,7 +343,7 @@ interface Character {
 
 ### 第七关
 - 网格大小：3x4
-- 起始位置：B1和A4
+- 起始位置：B1和A4 (双起始点)
 - 坏人数量：3 (A2, C2, B4)
 - 特殊位置：B2和B3为空位
 - 特殊角色：
@@ -376,5 +393,118 @@ interface Character {
 游戏界面左上角的设置按钮(⚙️)提供以下功能：
 - 返回首页：返回主菜单界面
 - 重启关卡：重新开始当前关卡
+
+## 项目技术栈
+
+### 核心依赖
+```json
+{
+  "dependencies": {
+    "clsx": "2.1.1",
+    "framer-motion": "11.15.0",
+    "mobx": "^6.12.0",
+    "mobx-react-lite": "^4.0.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "7.1.1",
+    "tailwind-merge": "2.6.0"
+  }
+}
+```
+
+### 项目结构
+```
+src/
+├── data/               # 游戏数据
+│   └── levels/         # 关卡配置
+├── features/           # 功能模块
+│   └── game/          
+│       └── components/ # 游戏组件
+├── hooks/             # 自定义Hook
+├── lib/               # 工具函数
+├── providers/         # Context提供者
+├── shared/            # 共享资源
+│   └── types/         # 类型定义
+└── stores/            # 状态管理
+
+```
+
+### 构建工具
+- Vite 5.1.0
+- TypeScript 5.2.2
+- Tailwind CSS 3.4.1
+- ESLint 8.56.0
+- Jest 29.7.0
+
+### 开发命令
+```bash
+# 开发环境
+npm run dev
+
+# 生产构建
+npm run build
+
+# 运行测试
+npm run test
+
+# 代码检查
+npm run lint
+```
+
+### 类型定义
+```typescript
+// 关卡配置类型
+interface LevelConfig {
+  id: number;
+  gridSize: {
+    rows: number;
+    cols: number;
+  };
+  startPosition: string | string[];  // 支持多起始点
+  impostorCount: number;
+  characters: Character[];
+  clueFlow: {
+    steps: ClueFlowStep[];
+  };
+}
+
+// 角色类型
+interface Character {
+  id: string;
+  position: string;
+  name: string;
+  state: CharacterState;
+  identity: {
+    isImpostor: boolean;
+    isRevealed: boolean;
+  };
+  clue: Clue;
+}
+
+// 线索类型
+interface Clue {
+  text: string;
+  type: ClueType;
+  targetPosition?: string;
+  highlightNames: string[];
+  isUsed: boolean;
+}
+
+type ClueType = 'direct' | 'area' | 'behavior' | 'relation';
+type CharacterState = 'initial' | 'revealed' | 'completed';
+```
+
+### 编译配置
+```typescript
+// vite.config.ts
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+});
+```
 
 [继续...] 
