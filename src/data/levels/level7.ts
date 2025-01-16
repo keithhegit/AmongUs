@@ -8,54 +8,6 @@ export const level7: LevelConfig = {
   },
   startPosition: ['B1', 'A4'],
   impostorCount: 3,
-  clueFlow: {
-    steps: [
-      {
-        round: 1,
-        fromPosition: 'B1',
-        clueType: 'direct',
-        targetInfo: {
-          position: 'A1'
-        }
-      },
-      {
-        round: 2,
-        fromPosition: 'A1',
-        clueType: 'area',
-        targetInfo: {}
-      },
-      {
-        round: 3,
-        fromPosition: 'C1',
-        clueType: 'area',
-        targetInfo: {}
-      },
-      {
-        round: 4,
-        fromPosition: 'A3',
-        clueType: 'area',
-        targetInfo: {
-          position: 'C3'
-        }
-      },
-      {
-        round: 5,
-        fromPosition: 'C3',
-        clueType: 'direct',
-        targetInfo: {
-          position: 'C2'
-        }
-      },
-      {
-        round: 6,
-        fromPosition: 'A4',
-        clueType: 'relation',
-        targetInfo: {
-          position: 'B4'
-        }
-      }
-    ]
-  },
   characters: [
     {
       id: 'A1',
@@ -128,18 +80,18 @@ export const level7: LevelConfig = {
     {
       id: 'B2',
       position: 'B2',
-      name: '',
-      state: 'initial',
+      name: '空位',
+      state: 'completed',
       identity: {
         isImpostor: false,
-        isRevealed: false
+        isRevealed: true
       },
       clue: {
         text: '',
-        type: 'behavior',
+        type: 'direct',
         targetPosition: '',
         highlightNames: [],
-        isUsed: false
+        isUsed: true
       }
     },
     {
@@ -179,18 +131,18 @@ export const level7: LevelConfig = {
     {
       id: 'B3',
       position: 'B3',
-      name: '',
-      state: 'initial',
+      name: '空位',
+      state: 'completed',
       identity: {
         isImpostor: false,
-        isRevealed: false
+        isRevealed: true
       },
       clue: {
         text: '',
-        type: 'behavior',
+        type: 'direct',
         targetPosition: '',
         highlightNames: [],
-        isUsed: false
+        isUsed: true
       }
     },
     {
@@ -261,5 +213,49 @@ export const level7: LevelConfig = {
         isUsed: false
       }
     }
-  ]
+  ],
+  clueFlow: {
+    steps: [
+      {
+        round: 1,
+        fromPosition: 'B1',
+        clueType: 'direct',
+        targetInfo: {
+          position: 'A1'
+        }
+      },
+      {
+        round: 2,
+        fromPosition: 'A1',
+        clueType: 'area',
+        targetInfo: {
+          area: 'all'
+        }
+      },
+      {
+        round: 3,
+        fromPosition: 'C1',
+        clueType: 'area',
+        targetInfo: {
+          area: 'BC'
+        }
+      },
+      {
+        round: 4,
+        fromPosition: 'A3',
+        clueType: 'area',
+        targetInfo: {
+          position: 'C3'
+        }
+      },
+      {
+        round: 5,
+        fromPosition: 'C3',
+        clueType: 'direct',
+        targetInfo: {
+          position: 'C2'
+        }
+      }
+    ]
+  }
 }; 
