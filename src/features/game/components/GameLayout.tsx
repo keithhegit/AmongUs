@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { CharacterCard } from './CharacterCard';
+import { RoleToggle } from './RoleToggle';
 import { useStore } from '@/providers/StoreProvider';
 import type { Character } from '@/shared/types/game';
 
@@ -34,26 +35,40 @@ export const GameLayout = observer(() => {
     return a.position[0].localeCompare(b.position[0]);
   });
 
+  // 计算网格列数
+  const gridCols = Math.max(
+    ...sortedCharacters.map(c => c.position[0].charCodeAt(0) - 'A'.charCodeAt(0) + 1)
+  );
+
+  // 根据列数决定网格类名
+  const gridColsClass = `grid-cols-${gridCols}`;
+
   return (
-    <div className="p-2">
-      {/* 游戏状态 */}
-      <div className="mb-4 text-center">
-        <div className="text-lg font-medium text-gray-700">
-          当前回合: {gameStore.currentRound + 1}
+    <div className="relative min-h-screen pb-[120px] flex flex-col">
+      {/* Safe Area Container */}
+      <div className="w-full mx-auto px-2 flex-1">
+        {/* 游戏状态 */}
+        <div className="mb-4 text-center">
+          <div className="text-lg font-medium text-gray-700">
+            当前回合: {gameStore.currentRound + 1}
+          </div>
+        </div>
+
+        {/* 角色网格 */}
+        <div className={`grid ${gridColsClass} gap-1.5 mt-[164px]`}>
+          {sortedCharacters.map(character => (
+            <CharacterCard
+              key={character.position}
+              character={character}
+              isSelected={character.state !== 'initial'}
+              onClick={() => handleCharacterClick(character.position)}
+            />
+          ))}
         </div>
       </div>
 
-      {/* 角色网格 */}
-      <div className="grid grid-cols-3 gap-3 max-w-4xl mx-auto">
-        {sortedCharacters.map(character => (
-          <CharacterCard
-            key={character.id}
-            character={character}
-            isSelected={character.state !== 'initial'}
-            onClick={() => handleCharacterClick(character.position)}
-          />
-        ))}
-      </div>
+      {/* 底部控制栏 */}
+      <RoleToggle />
     </div>
   );
 });

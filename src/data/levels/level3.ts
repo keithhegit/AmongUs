@@ -1,5 +1,5 @@
 import { ClueUtils } from '@/utils/clueUtils';
-import type { LevelConfig } from '@/shared/types';
+import type { LevelConfig } from '@/shared/types/level';
 
 export const level3: LevelConfig = {
   id: 3,
@@ -8,7 +8,7 @@ export const level3: LevelConfig = {
   impostorCount: 4, // B1, C2, A2, B3 是坏人
   characters: [
     {
-      id: 'char_A1',
+      id: '001',  // 阿波：男性，红色T恤
       position: 'A1',
       name: '阿波',
       state: 'initial',
@@ -25,7 +25,7 @@ export const level3: LevelConfig = {
       }
     },
     {
-      id: 'char_B1',
+      id: '003',  // 小彬：男性，胡子，黑色工装
       position: 'B1',
       name: '小彬',
       state: 'initial',
@@ -42,7 +42,7 @@ export const level3: LevelConfig = {
       }
     },
     {
-      id: 'char_C1',
+      id: '004',  // 阿婷：女性，猫耳，棕色T恤
       position: 'C1',
       name: '阿婷',
       state: 'initial',
@@ -59,7 +59,7 @@ export const level3: LevelConfig = {
       }
     },
     {
-      id: 'char_A2',
+      id: '007',  // 小辉：男性，耳机，蓝色工装
       position: 'A2',
       name: '小辉',
       state: 'initial',
@@ -76,7 +76,7 @@ export const level3: LevelConfig = {
       }
     },
     {
-      id: 'char_B2',
+      id: '006',  // 阿敏：女性，橙色背心
       position: 'B2',
       name: '阿敏',
       state: 'initial',
@@ -93,7 +93,7 @@ export const level3: LevelConfig = {
       }
     },
     {
-      id: 'char_C2',
+      id: '027',  // 阿岚：男性，绿帽子，绿色工装
       position: 'C2',
       name: '阿岚',
       state: 'initial',
@@ -110,7 +110,7 @@ export const level3: LevelConfig = {
       }
     },
     {
-      id: 'char_A3',
+      id: '014',  // 阿慧：女性，棕发，玫红背心
       position: 'A3',
       name: '阿慧',
       state: 'initial',
@@ -127,7 +127,7 @@ export const level3: LevelConfig = {
       }
     },
     {
-      id: 'char_B3',
+      id: '024',  // 小依：女性，红帽子，红色工装
       position: 'B3',
       name: '小依',
       state: 'initial',
@@ -144,7 +144,7 @@ export const level3: LevelConfig = {
       }
     },
     {
-      id: 'char_C3',
+      id: '002',  // 小涛：男性，领带，绿色衬衫
       position: 'C3',
       name: '小涛',
       state: 'initial',

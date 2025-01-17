@@ -1,0 +1,394 @@
+{
+  "citizens": [
+    {
+      "id": "001",
+      "gender": "boy",
+      "feature": "none",
+      "clothing": "redts"
+    },
+    {
+      "id": "002",
+      "gender": "boy",
+      "feature": "tie",
+      "clothing": "greenshirt"
+    },
+    {
+      "id": "003",
+      "gender": "boy",
+      "feature": "beard",
+      "clothing": "blackoveralls"
+    },
+    {
+      "id": "004",
+      "gender": "girl",
+      "feature": "catear",
+      "clothing": "brownts"
+    },
+    {
+      "id": "005",
+      "gender": "boy",
+      "feature": "beard",
+      "clothing": "orangets"
+    },
+    {
+      "id": "006",
+      "gender": "girl",
+      "feature": "none",
+      "clothing": "orangevest"
+    },
+    {
+      "id": "007",
+      "gender": "boy",
+      "feature": "headphones",
+      "clothing": "blueoveralls"
+    },
+    {
+      "id": "008",
+      "gender": "girl",
+      "feature": "sunglasses",
+      "clothing": "greents"
+    },
+    {
+      "id": "009",
+      "gender": "girl",
+      "feature": "tie",
+      "clothing": "shirt"
+    },
+    {
+      "id": "010",
+      "gender": "boy",
+      "feature": "brownhair",
+      "clothing": "vest"
+    },
+    {
+      "id": "011",
+      "gender": "girl",
+      "feature": "orangehat",
+      "clothing": "brownoveralls"
+    },
+    {
+      "id": "012",
+      "gender": "boy",
+      "feature": "brownhair",
+      "clothing": "orangevest"
+    },
+    {
+      "id": "013",
+      "gender": "girl",
+      "feature": "sunglasses",
+      "clothing": "brownts"
+    },
+    {
+      "id": "014",
+      "gender": "girl",
+      "feature": "brownhair",
+      "clothing": "roseredvest"
+    },
+    {
+      "id": "015",
+      "gender": "boy",
+      "feature": "redhat-beard",
+      "clothing": "whitets"
+    },
+    {
+      "id": "016",
+      "gender": "girl",
+      "feature": "brownhair",
+      "clothing": "blackoveralls"
+    },
+    {
+      "id": "017",
+      "gender": "girl",
+      "feature": "none",
+      "clothing": "greenshirt"
+    },
+    {
+      "id": "018",
+      "gender": "boy",
+      "feature": "bluecap",
+      "clothing": "blueoveralls"
+    },
+    {
+      "id": "019",
+      "gender": "boy",
+      "feature": "bluehat-beard",
+      "clothing": "greents"
+    },
+    {
+      "id": "020",
+      "gender": "boy",
+      "feature": "browncap",
+      "clothing": "brownoveralls"
+    },
+    {
+      "id": "021",
+      "gender": "boy",
+      "feature": "brownhat-beard",
+      "clothing": "overalls"
+    },
+    {
+      "id": "022",
+      "gender": "boy",
+      "feature": "earphones",
+      "clothing": "whiteshirt"
+    },
+    {
+      "id": "023",
+      "gender": "boy",
+      "feature": "grayhair",
+      "clothing": "browntshirt"
+    },
+    {
+      "id": "024",
+      "gender": "girl",
+      "feature": "redhat",
+      "clothing": "redoveralls"
+    },
+    {
+      "id": "025",
+      "gender": "girl",
+      "feature": "yellowhair",
+      "clothing": "brownvest"
+    },
+    {
+      "id": "026",
+      "gender": "boy",
+      "feature": "earphones-redhair",
+      "clothing": "overalls"
+    },
+    {
+      "id": "027",
+      "gender": "boy",
+      "feature": "greencap",
+      "clothing": "greenoveralls"
+    },
+    {
+      "id": "028",
+      "gender": "boy",
+      "feature": "greenhair",
+      "clothing": "shirt"
+    },
+    {
+      "id": "029",
+      "gender": "boy",
+      "feature": "beard",
+      "clothing": "brownts"
+    },
+    {
+      "id": "030",
+      "gender": "boy",
+      "feature": "beard",
+      "clothing": "greenoveralls"
+    },
+    {
+      "id": "031",
+      "gender": "boy",
+      "feature": "cap",
+      "clothing": "redoveralls"
+    },
+    {
+      "id": "032",
+      "gender": "boy",
+      "feature": "beard",
+      "clothing": "bluets"
+    },
+    {
+      "id": "033",
+      "gender": "girl",
+      "feature": "yellowhair",
+      "clothing": "whitevest"
+    },
+    {
+      "id": "034",
+      "gender": "girl",
+      "feature": "yellowhair",
+      "clothing": "blueoveralls"
+    },
+    {
+      "id": "035",
+      "gender": "boy",
+      "feature": "orangecurls",
+      "clothing": "brownclothing"
+    },
+    {
+      "id": "036",
+      "gender": "boy",
+      "feature": "bluehair",
+      "clothing": "orangetshirt"
+    },
+    {
+      "id": "037",
+      "gender": "girl",
+      "feature": "purplehair",
+      "clothing": "overalls"
+    },
+    {
+      "id": "038",
+      "gender": "boy",
+      "feature": "orangehat-beard",
+      "clothing": "none"
+    },
+    {
+      "id": "039",
+      "gender": "boy",
+      "feature": "beard",
+      "clothing": "yellowts"
+    },
+    {
+      "id": "040",
+      "gender": "boy",
+      "feature": "earphones-roseredhair",
+      "clothing": "none"
+    },
+    {
+      "id": "041",
+      "gender": "boy",
+      "feature": "orangehair",
+      "clothing": "purpletshirt"
+    },
+    {
+      "id": "042",
+      "gender": "boy",
+      "feature": "redcap",
+      "clothing": "orangeoveralls"
+    },
+    {
+      "id": "043",
+      "gender": "boy",
+      "feature": "camelhair",
+      "clothing": "redtshirt"
+    },
+    {
+      "id": "044",
+      "gender": "boy",
+      "feature": "redhat-beard",
+      "clothing": "none"
+    },
+    {
+      "id": "045",
+      "gender": "girl",
+      "feature": "bluehat",
+      "clothing": "blueoveralls"
+    },
+    {
+      "id": "046",
+      "gender": "girl",
+      "feature": "brownhair",
+      "clothing": "bluevest"
+    },
+    {
+      "id": "047",
+      "gender": "girl",
+      "feature": "brownhair",
+      "clothing": "overalls"
+    },
+    {
+      "id": "048",
+      "gender": "girl",
+      "feature": "brownhair",
+      "clothing": "greyshirt"
+    },
+    {
+      "id": "049",
+      "gender": "girl",
+      "feature": "brownhat",
+      "clothing": "brownoveralls"
+    },
+    {
+      "id": "050",
+      "gender": "girl",
+      "feature": "brownhair",
+      "clothing": "brownvest"
+    },
+    {
+      "id": "051",
+      "gender": "girl",
+      "feature": "brownhair",
+      "clothing": "greyoveralls"
+    },
+    {
+      "id": "052",
+      "gender": "girl",
+      "feature": "redhair",
+      "clothing": "overalls"
+    },
+    {
+      "id": "053",
+      "gender": "girl",
+      "feature": "redhair",
+      "clothing": "roseredshirt"
+    },
+    {
+      "id": "054",
+      "gender": "boy",
+      "feature": "earphones",
+      "clothing": "brownvest"
+    },
+    {
+      "id": "055",
+      "gender": "boy",
+      "feature": "brownhair",
+      "clothing": "whitets"
+    },
+    {
+      "id": "056",
+      "gender": "boy",
+      "feature": "yellowhair",
+      "clothing": "blueclothing"
+    },
+    {
+      "id": "057",
+      "gender": "girl",
+      "feature": "bluehair",
+      "clothing": "overalls"
+    },
+    {
+      "id": "058",
+      "gender": "girl",
+      "feature": "bluehair",
+      "clothing": "blueshirt"
+    },
+    {
+      "id": "059",
+      "gender": "girl",
+      "feature": "darkbluehair",
+      "clothing": "redoveralls"
+    },
+    {
+      "id": "060",
+      "gender": "girl",
+      "feature": "greencurlyhair",
+      "clothing": "overalls"
+    },
+    {
+      "id": "061",
+      "gender": "girl",
+      "feature": "greenhair",
+      "clothing": "blueshirt"
+    },
+    {
+      "id": "062",
+      "gender": "girl",
+      "feature": "greenhat",
+      "clothing": "greenoveralls"
+    },
+    {
+      "id": "063",
+      "gender": "girl",
+      "feature": "greyhair",
+      "clothing": "greenvest"
+    },
+    {
+      "id": "064",
+      "gender": "girl",
+      "feature": "greenhair",
+      "clothing": "cameloveralls"
+    },
+    {
+      "id": "065",
+      "gender": "girl",
+      "feature": "redhair",
+      "clothing": "redoveralls"
+    }
+  ]
+} 

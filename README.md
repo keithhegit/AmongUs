@@ -507,4 +507,222 @@ export default defineConfig({
 });
 ```
 
+## UI 布局规范
+
+### 1. 卡片布局规范
+
+#### 1.1 卡片基础结构
+```tsx
+<div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md">
+  {/* 位置标识 */}
+  {/* 身份标识 */}
+  {/* 内容区域 */}
+</div>
+```
+
+#### 1.2 卡片尺寸与间距
+- 宽高比：3:4
+- 圆角：rounded-lg (8px)
+- 阴影：默认 shadow-md，悬浮时 shadow-lg
+- 网格间距：gap-2 (8px)
+- 容器内边距：p-2 (8px)
+
+#### 1.3 性别区分样式
+- 男性角色：bg-blue-100
+- 女性角色：bg-pink-100
+
+#### 1.4 位置标识
+```tsx
+<div className="absolute top-0 left-0 bg-black/80 text-white px-1.5 py-0.5 text-[min(3vw,14px)] rounded-br">
+  {position}
+</div>
+```
+
+#### 1.5 身份标识
+```tsx
+<div className="absolute top-0 right-0 text-[min(8vw,40px)] leading-none">
+  {identity.isImpostor ? '😈' : '😊'}
+</div>
+```
+
+#### 1.6 卡片状态
+
+##### 1.6.1 未翻开状态
+- 大图显示：占满整个卡片空间
+- 底部名字栏：半透明黑色背景 (bg-black/70)
+```tsx
+<div className="absolute inset-0 flex items-center justify-center p-2">
+  <img className="w-full h-full object-contain" />
+</div>
+<div className="absolute bottom-0 w-full bg-black/70 py-1">
+  <div className="text-white text-center text-[min(3vw,14px)]">{name}</div>
+</div>
+```
+
+##### 1.6.2 已翻开状态
+- 图片区域：30% 高度，浅色背景
+- 文本区域：70% 高度，深色背景
+```tsx
+<div className="h-full flex flex-col p-2">
+  {/* 图片区域 */}
+  <div className="w-full h-[30%] flex items-center justify-center bg-white/50 rounded-t">
+    <div className="w-[85%] h-[85%]">
+      <img className="w-full h-full object-contain" />
+    </div>
+  </div>
+  
+  {/* 文本区域 */}
+  <div className="w-full h-[70%] rounded-b overflow-hidden bg-black/90">
+    {/* 名字 */}
+    <div className="text-center text-[min(3vw,14px)] text-white py-1 font-medium">
+      {name}
+    </div>
+    {/* 分隔线 */}
+    <div className="w-full h-[1px] bg-white/30" />
+    {/* 线索文本 */}
+    <div className="px-2 py-1.5">
+      <div className="text-white text-[min(3vw,14px)] leading-tight text-center">
+        {clue.text}
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+#### 1.7 响应式设计
+- 字体大小：使用 min(vw, px) 确保在不同屏幕尺寸下的可读性
+  - 位置标识：text-[min(3vw,14px)]
+  - 身份标识：text-[min(8vw,40px)]
+  - 名字和线索：text-[min(3vw,14px)]
+- 图片尺寸：使用相对单位确保自适应
+
+#### 1.8 交互效果
+- 悬浮缩放：hover:scale-105
+- 选中状态：ring-2 ring-blue-500
+- 长按放大：500ms 延时触发
+
+### 2. 布局网格规范
+
+#### 2.1 网格容器
+```tsx
+<div className="grid grid-cols-3 gap-2 p-2">
+  {/* 卡片内容 */}
+</div>
+```
+
+#### 2.2 网格配置
+- 3x3 布局：grid-cols-3
+- 间距：gap-2 (8px)
+- 内边距：p-2 (8px)
+
+### 3. 颜色规范
+
+#### 3.1 背景色
+- 男性角色卡片：bg-blue-100
+- 女性角色卡片：bg-pink-100
+- 文本容器（好人）：bg-black/90
+- 文本容器（坏人）：bg-red-600/90
+- 半透明遮罩：bg-black/70, bg-white/50
+
+#### 3.2 文本颜色
+- 主要文本：text-white
+- 分隔线：bg-white/30
+
+### 4. 开发规范
+
+#### 4.1 组件结构
+- 使用 TypeScript 确保类型安全
+- 使用 MobX 进行状态管理
+- 使用 observer 包装组件实现响应式更新
+
+#### 4.2 图片处理
+- 使用 object-contain 确保图片比例正确
+- 实现图片预加载避免闪烁
+- 添加 alt 属性提高可访问性
+
+#### 4.3 性能优化
+- 使用 memo 优化不必要的重渲染
+- 图片懒加载
+- 使用 CSS 变量实现主题定制
+
+#### 4.4 可访问性
+- 合适的颜色对比度
+- 键盘导航支持
+- ARIA 标签支持
+
+### 5. 自适应布局策略
+
+#### 5.1 屏幕尺寸适配
+- iPhone SE (375px)：基准设计尺寸
+- iPhone 14 Pro Max (428px)：优化大屏体验
+
+#### 5.2 文本自适应
+使用 vw 单位结合最大像素值：
+```css
+text-[min(3vw,14px)] /* 普通文本 */
+text-[min(8vw,40px)] /* 表情图标 */
+```
+
+#### 5.3 间距自适应
+- 使用相对单位定义间距
+- 在关键断点进行微调
+
+### 6. 动画与过渡效果
+
+#### 6.1 卡片翻转
+- 使用 transform-style: preserve-3d
+- 添加适当的过渡时间
+- 考虑添加缓动函数优化体验
+
+#### 6.2 状态变化
+- hover 效果：scale + shadow 变化
+- 选中效果：边框高亮
+- 长按效果：延时显示大图
+
+### 7. 错误处理
+
+#### 7.1 图片加载
+- 添加加载占位图
+- 处理加载失败情况
+- 实现重试机制
+
+#### 7.2 数据验证
+- 验证必要属性
+- 提供默认值
+- 错误边界处理
+
+### 8. 测试规范
+
+#### 8.1 单元测试
+- 测试组件渲染
+- 测试交互行为
+- 测试边界情况
+
+#### 8.2 集成测试
+- 测试组件间通信
+- 测试状态管理
+- 测试路由跳转
+
+#### 8.3 E2E测试
+- 测试完整游戏流程
+- 测试不同设备适配
+- 测试网络异常情况
+
+### 9. 维护指南
+
+#### 9.1 代码组织
+- 遵循功能模块化
+- 保持组件粒度合适
+- 注释关键业务逻辑
+
+#### 9.2 样式管理
+- 使用 Tailwind 工具类
+- 避免内联样式
+- 保持类名语义化
+
+#### 9.3 版本控制
+- 遵循语义化版本
+- 编写清晰的提交信息
+- 保持向后兼容
+
 [继续...] 
