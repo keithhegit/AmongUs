@@ -1,9 +1,10 @@
 {
-  "name": "Among Us Detective",
-  "short_name": "Detective",
+  "name": "AmongUs",
+  "short_name": "AmongUs",
   "description": "A deduction game inspired by Among Us",
   "start_url": "/",
-  "display": "standalone",
+  "display": "fullscreen",
+  "orientation": "landscape",
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "icons": [
