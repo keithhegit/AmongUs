@@ -55,7 +55,7 @@ export const CharacterCard = observer(({
     if (id) {
       // 空位卡片
       if (id === '200') {
-        setImagePath('/src/assets/images/professions/200-blank-no.png');
+        setImagePath(new URL('../../../assets/images/professions/200-blank-no.png', import.meta.url).href);
         return;
       }
 
@@ -123,7 +123,7 @@ export const CharacterCard = observer(({
         </div>
         <div className="w-full h-full flex items-center justify-center">
           <img 
-            src={imagePath}
+            src={getCitizenImagePath('200')}
             alt="空位"
             className="w-[85%] h-[85%] object-contain opacity-50"  // 降低透明度
           />
