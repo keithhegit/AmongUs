@@ -3,6 +3,22 @@ import type { Character, LevelConfig } from '@/shared/types/game';
 import { levels } from '@/data/levels';
 import { eventService } from '@/shared/services/EventService';
 
+// 游戏状态持久化的 key
+const GAME_STATE_KEY = 'AMONG_US_GAME_STATE';
+
+// 需要持久化的游戏状态
+interface GameState {
+  currentLevelIndex: number;
+  currentLevel: LevelConfig | null;
+  characters: Character[];
+  currentRound: number;
+  mistakeCount: number;
+  revealedPositions: string[];
+  judgeMode: 'good' | 'bad';
+  coins: number;
+  remainingImpostors: number;
+}
+
 export class GameStore {
   currentLevel: LevelConfig | null = null;
   currentLevelIndex: number = 0;
@@ -18,6 +34,61 @@ export class GameStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.loadGameState();
+  }
+
+  // 保存游戏状态到 localStorage
+  private saveGameState() {
+    const state: GameState = {
+      currentLevelIndex: this.currentLevelIndex,
+      currentLevel: this.currentLevel,
+      characters: this.characters,
+      currentRound: this.currentRound,
+      mistakeCount: this.mistakeCount,
+      revealedPositions: Array.from(this.revealedPositions),
+      judgeMode: this.judgeMode,
+      coins: this.coins,
+      remainingImpostors: this.remainingImpostors
+    };
+    localStorage.setItem(GAME_STATE_KEY, JSON.stringify(state));
+  }
+
+  // 从 localStorage 加载游戏状态
+  private loadGameState() {
+    try {
+      const savedState = localStorage.getItem(GAME_STATE_KEY);
+      if (savedState) {
+        const state: GameState = JSON.parse(savedState);
+        this.currentLevelIndex = state.currentLevelIndex;
+        this.currentLevel = state.currentLevel;
+        this.characters = state.characters;
+        this.currentRound = state.currentRound;
+        this.mistakeCount = state.mistakeCount;
+        this.revealedPositions = new Set(state.revealedPositions);
+        this.judgeMode = state.judgeMode;
+        this.coins = state.coins;
+        this.remainingImpostors = state.remainingImpostors;
+        console.log('游戏状态已恢复');
+      }
+    } catch (error) {
+      console.error('加载游戏状态失败:', error);
+      this.clearGameState();
+    }
+  }
+
+  // 清除游戏状态
+  clearGameState() {
+    localStorage.removeItem(GAME_STATE_KEY);
+    this.currentLevel = null;
+    this.currentLevelIndex = 0;
+    this.characters = [];
+    this.currentRound = 0;
+    this.mistakeCount = 0;
+    this.revealedPositions.clear();
+    this.judgeMode = 'good';
+    this.coins = 0;
+    this.remainingImpostors = 0;
+    this.showResultModal = false;
   }
 
   initLevel(level: LevelConfig) {
@@ -49,10 +120,14 @@ export class GameStore {
     this.remainingImpostors = level.impostorCount;
     this.judgeMode = 'good';
     this.showResultModal = false;
+
+    // 保存游戏状态
+    this.saveGameState();
   }
 
   setJudgeMode = (mode: 'good' | 'bad') => {
     this.judgeMode = mode;
+    this.saveGameState();
   }
 
   handleCharacterClick = (position: string) => {
@@ -101,6 +176,7 @@ export class GameStore {
     }
 
     this.currentRound++;
+    this.saveGameState();
   }
 
   nextLevel = () => {
@@ -112,11 +188,13 @@ export class GameStore {
 
     this.currentLevelIndex = nextIndex;
     this.initLevel(levels[nextIndex]);
+    this.saveGameState();
   }
 
   restartLevel = () => {
     if (this.currentLevel) {
       this.initLevel(this.currentLevel);
+      this.saveGameState();
     }
   }
 
