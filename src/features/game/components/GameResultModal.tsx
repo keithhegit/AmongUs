@@ -3,9 +3,11 @@ import { useStore } from '@/providers/StoreProvider';
 
 export const GameResultModal = observer(() => {
   const { gameStore } = useStore();
-  const { showResultModal, isVictory, nextLevel, restartLevel } = gameStore;
+  const { showResultModal, isVictory, nextLevel, restartLevel, currentLevelIndex } = gameStore;
 
   if (!showResultModal) return null;
+
+  const isLastLevel = currentLevelIndex === 6;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
@@ -13,9 +15,11 @@ export const GameResultModal = observer(() => {
         <h2 className="text-2xl font-bold mb-4">
           {isVictory ? '恭喜通关！' : '游戏结束'}
         </h2>
-        <p className="mb-6">
+        <p className="whitespace-pre-line mb-6">
           {isVictory 
-            ? '你成功找出了所有坏人！' 
+            ? isLastLevel 
+              ? '所有关卡完成！\n你耗光了基夫的脑力，\n请期待新关卡更新！'
+              : '你成功找出了所有坏人！'
             : '很遗憾，你失败了。再试一次吧！'}
         </p>
         <div className="flex justify-end gap-4">
@@ -25,7 +29,7 @@ export const GameResultModal = observer(() => {
           >
             重新开始
           </button>
-          {isVictory && (
+          {isVictory && !isLastLevel && (
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               onClick={nextLevel}

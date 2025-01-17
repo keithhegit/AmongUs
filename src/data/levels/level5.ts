@@ -1,5 +1,5 @@
 import { ClueUtils } from '@/utils/clueUtils';
-import type { LevelConfig } from '@/shared/types';
+import type { LevelConfig } from '@/shared/types/game';
 
 export const level5: LevelConfig = {
   id: 5,
@@ -8,9 +8,9 @@ export const level5: LevelConfig = {
   impostorCount: 3, // B2, C2, A4是坏人
   characters: [
     {
-      id: 'char_A1',
+      id: '120', // 男警察
       position: 'A1',
-      name: '小泉(警察)',
+      name: '小泉',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -25,9 +25,9 @@ export const level5: LevelConfig = {
       }
     },
     {
-      id: 'char_B1',
+      id: '001', // 随机路人
       position: 'B1',
-      name: '阿瑞(路人)',
+      name: '阿瑞',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -42,9 +42,9 @@ export const level5: LevelConfig = {
       }
     },
     {
-      id: 'char_C1',
+      id: '121', // 女警察
       position: 'C1',
-      name: '阿魔(警察)',
+      name: '阿珍',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -59,26 +59,26 @@ export const level5: LevelConfig = {
       }
     },
     {
-      id: 'char_A2',
+      id: '002', // 随机路人
       position: 'A2',
-      name: '小莲(路人)',
+      name: '阿强',
       state: 'initial',
       identity: {
         isImpostor: false,
         isRevealed: false
       },
       clue: {
-        text: '请收下我的感谢之意!',
-        type: 'behavior',
-        targetPosition: 'B2',
+        text: '坏警察不是女生',
+        type: 'direct',
+        targetPosition: 'C2',
         highlightNames: [],
         isUsed: false
       }
     },
     {
-      id: 'char_B2',
+      id: '003', // 随机路人(坏人)
       position: 'B2',
-      name: '小妍(路人)',
+      name: 'David',
       state: 'initial',
       identity: {
         isImpostor: true,
@@ -93,9 +93,9 @@ export const level5: LevelConfig = {
       }
     },
     {
-      id: 'char_C2',
+      id: '120', // 男警察(坏人)
       position: 'C2',
-      name: '阿星(警察)',
+      name: '阿星',
       state: 'initial',
       identity: {
         isImpostor: true,
@@ -110,9 +110,9 @@ export const level5: LevelConfig = {
       }
     },
     {
-      id: 'char_A3',
+      id: '108', // 男医生
       position: 'A3',
-      name: '阿玉(医生)',
+      name: '阿明',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -127,26 +127,26 @@ export const level5: LevelConfig = {
       }
     },
     {
-      id: 'char_B3',
+      id: '004', // 随机路人
       position: 'B3',
-      name: '阿婷(路人)',
+      name: '阿婷',
       state: 'initial',
       identity: {
         isImpostor: false,
         isRevealed: false
       },
       clue: {
-        text: '小妍是她那列唯一的坏蛋',
+        text: 'David是他那列唯一的坏蛋',
         type: 'area',
         targetPosition: 'B2',
-        highlightNames: ['小妍'],
+        highlightNames: ['David'],
         isUsed: false
       }
     },
     {
-      id: 'char_C3',
+      id: '005', // 随机路人
       position: 'C3',
-      name: '小天(路人)',
+      name: '小天',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -161,9 +161,9 @@ export const level5: LevelConfig = {
       }
     },
     {
-      id: 'char_A4',
+      id: '006', // 随机路人(坏人)
       position: 'A4',
-      name: '阿凯(路人)',
+      name: '小龙',
       state: 'initial',
       identity: {
         isImpostor: true,
@@ -178,9 +178,9 @@ export const level5: LevelConfig = {
       }
     },
     {
-      id: 'char_B4',
+      id: '109', // 女医生
       position: 'B4',
-      name: '阿智(医生)',
+      name: '阿智',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -195,23 +195,51 @@ export const level5: LevelConfig = {
       }
     },
     {
-      id: 'char_C4',
+      id: '012', // 随机路人
       position: 'C4',
-      name: '小义(路人)',
+      name: '小义',
       state: 'initial',
       identity: {
         isImpostor: false,
         isRevealed: false
       },
       clue: {
-        text: '我的同团都是好人',
+        text: '我的邻居都是好人',
         type: 'area',
         targetPosition: 'B4',
         highlightNames: [],
         isUsed: false
       }
     }
-  ]
+  ],
+  clueFlow: {
+    steps: [
+      {
+        round: 1,
+        fromPosition: 'C4',
+        clueType: 'area',
+        targetInfo: {
+          position: 'B4'
+        }
+      },
+      {
+        round: 2,
+        fromPosition: 'B4',
+        clueType: 'direct',
+        targetInfo: {
+          position: 'C4'
+        }
+      },
+      {
+        round: 3,
+        fromPosition: 'A3',
+        clueType: 'direct',
+        targetInfo: {
+          position: 'B3'
+        }
+      }
+    ]
+  }
 };
 
 export default level5; 

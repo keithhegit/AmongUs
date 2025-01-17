@@ -1,19 +1,19 @@
 import { ClueUtils } from '@/utils/clueUtils';
-import type { LevelConfig } from '@/shared/types';
+import type { LevelConfig } from '@/shared/types/game';
 
 export const level4: LevelConfig = {
   id: 4,
   gridSize: { rows: 3, cols: 3 },
   startPosition: 'C1',
-  impostorCount: 2, // A1和B2是坏人
+  impostorCount: 2,
   characters: [
     {
-      id: 'char_A1',
+      id: '001',
       position: 'A1',
       name: '阿雄',
       state: 'initial',
       identity: {
-        isImpostor: true, // 坏人
+        isImpostor: true,
         isRevealed: false
       },
       clue: {
@@ -25,7 +25,7 @@ export const level4: LevelConfig = {
       }
     },
     {
-      id: 'char_B1',
+      id: '002',
       position: 'B1',
       name: '小广',
       state: 'initial',
@@ -42,7 +42,7 @@ export const level4: LevelConfig = {
       }
     },
     {
-      id: 'char_C1',
+      id: '004',
       position: 'C1',
       name: '小薇',
       state: 'initial',
@@ -59,7 +59,7 @@ export const level4: LevelConfig = {
       }
     },
     {
-      id: 'char_A2',
+      id: '013',
       position: 'A2',
       name: '小旭',
       state: 'initial',
@@ -76,12 +76,12 @@ export const level4: LevelConfig = {
       }
     },
     {
-      id: 'char_B2',
+      id: '006',
       position: 'B2',
       name: '阿凯',
       state: 'initial',
       identity: {
-        isImpostor: true, // 坏人
+        isImpostor: true,
         isRevealed: false
       },
       clue: {
@@ -93,7 +93,7 @@ export const level4: LevelConfig = {
       }
     },
     {
-      id: 'char_C2',
+      id: '017',
       position: 'C2',
       name: '小燕',
       state: 'initial',
@@ -110,7 +110,7 @@ export const level4: LevelConfig = {
       }
     },
     {
-      id: 'char_A3',
+      id: '014',
       position: 'A3',
       name: '小晴',
       state: 'initial',
@@ -127,7 +127,7 @@ export const level4: LevelConfig = {
       }
     },
     {
-      id: 'char_B3',
+      id: '024',
       position: 'B3',
       name: '阿琴',
       state: 'initial',
@@ -144,7 +144,7 @@ export const level4: LevelConfig = {
       }
     },
     {
-      id: 'char_C3',
+      id: '027',
       position: 'C3',
       name: '阿志',
       state: 'initial',
@@ -160,5 +160,33 @@ export const level4: LevelConfig = {
         isUsed: false
       }
     }
-  ]
+  ],
+  clueFlow: {
+    steps: [
+      {
+        round: 1,
+        fromPosition: 'C1',
+        clueType: 'area',
+        targetInfo: {
+          position: 'A1'
+        }
+      },
+      {
+        round: 2,
+        fromPosition: 'C2',
+        clueType: 'area',
+        targetInfo: {
+          position: 'B2'
+        }
+      },
+      {
+        round: 3,
+        fromPosition: 'A3',
+        clueType: 'area',
+        targetInfo: {
+          position: 'B3'
+        }
+      }
+    ]
+  }
 }; 

@@ -59,7 +59,7 @@ export const level3: LevelConfig = {
       }
     },
     {
-      id: '007',  // 小辉：男性，耳机，蓝色工装
+      id: '013',  // 小辉：男性，耳机，蓝色工装 (改为普通市民ID)
       position: 'A2',
       name: '小辉',
       state: 'initial',
@@ -160,5 +160,33 @@ export const level3: LevelConfig = {
         isUsed: false
       }
     }
-  ]
+  ],
+  clueFlow: {
+    steps: [
+      {
+        round: 1,
+        fromPosition: 'A1',
+        clueType: 'direct',
+        targetInfo: {
+          position: 'B1'
+        }
+      },
+      {
+        round: 2,
+        fromPosition: 'C1',
+        clueType: 'area',
+        targetInfo: {
+          position: 'C2'
+        }
+      },
+      {
+        round: 3,
+        fromPosition: 'B2',
+        clueType: 'direct',
+        targetInfo: {
+          position: 'A2'
+        }
+      }
+    ]
+  }
 }; 

@@ -10,7 +10,7 @@ export const level6: LevelConfig = {
   impostorCount: 4,
   characters: [
     {
-      id: 'A1',
+      id: '001',
       position: 'A1',
       name: '小智',
       state: 'initial',
@@ -27,7 +27,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'B1',
+      id: '004',
       position: 'B1',
       name: '小妍',
       state: 'initial',
@@ -44,7 +44,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'C1',
+      id: '006',
       position: 'C1',
       name: '小梦',
       state: 'revealed',
@@ -61,7 +61,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'A2',
+      id: '002',
       position: 'A2',
       name: '小峰',
       state: 'initial',
@@ -78,7 +78,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'B2',
+      id: '005',
       position: 'B2',
       name: '小军',
       state: 'initial',
@@ -95,9 +95,9 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'C2',
+      id: '009',
       position: 'C2',
-      name: '阿霞-twins',
+      name: '阿霞',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -112,7 +112,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'A3',
+      id: '013',
       position: 'A3',
       name: '小芳',
       state: 'initial',
@@ -129,7 +129,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'B3',
+      id: '007',
       position: 'B3',
       name: '小贤',
       state: 'initial',
@@ -146,9 +146,9 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'C3',
+      id: '009',
       position: 'C3',
-      name: '小月-twins',
+      name: '小月',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -163,7 +163,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'A4',
+      id: '010',
       position: 'A4',
       name: '阿强',
       state: 'initial',
@@ -180,7 +180,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'B4',
+      id: '112',
       position: 'B4',
       name: '小宁-农夫',
       state: 'initial',
@@ -197,7 +197,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'C4',
+      id: '011',
       position: 'C4',
       name: '小楠',
       state: 'revealed',
@@ -214,7 +214,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'A5',
+      id: '012',
       position: 'A5',
       name: '小胡',
       state: 'initial',
@@ -231,7 +231,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'B5',
+      id: '014',
       position: 'B5',
       name: '小雅',
       state: 'initial',
@@ -248,7 +248,7 @@ export const level6: LevelConfig = {
       }
     },
     {
-      id: 'C5',
+      id: '016',
       position: 'C5',
       name: '小天',
       state: 'initial',

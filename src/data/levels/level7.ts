@@ -10,9 +10,9 @@ export const level7: LevelConfig = {
   impostorCount: 3,
   characters: [
     {
-      id: 'A1',
+      id: '110',
       position: 'A1',
-      name: '小森-宇航员',
+      name: '小森',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -27,7 +27,7 @@ export const level7: LevelConfig = {
       }
     },
     {
-      id: 'B1',
+      id: '001',
       position: 'B1',
       name: '小杰',
       state: 'revealed',
@@ -36,7 +36,7 @@ export const level7: LevelConfig = {
         isRevealed: true
       },
       clue: {
-        text: '我的四个邻居中，我已能确定宇航员是好人',
+        text: '我的四个邻居中，我已能确定工程师是好人',
         type: 'direct',
         targetPosition: 'A1',
         highlightNames: ['小森'],
@@ -44,7 +44,7 @@ export const level7: LevelConfig = {
       }
     },
     {
-      id: 'C1',
+      id: '002',
       position: 'C1',
       name: '阿莱',
       state: 'initial',
@@ -61,7 +61,7 @@ export const level7: LevelConfig = {
       }
     },
     {
-      id: 'A2',
+      id: '004',
       position: 'A2',
       name: '小琳',
       state: 'initial',
@@ -78,24 +78,25 @@ export const level7: LevelConfig = {
       }
     },
     {
-      id: 'B2',
+      id: '200',
       position: 'B2',
       name: '空位',
       state: 'completed',
       identity: {
         isImpostor: false,
-        isRevealed: true
+        isRevealed: true,
+        isBlank: true
       },
       clue: {
         text: '',
-        type: 'direct',
+        type: 'none',
         targetPosition: '',
         highlightNames: [],
         isUsed: true
       }
     },
     {
-      id: 'C2',
+      id: '006',
       position: 'C2',
       name: '阿婷',
       state: 'initial',
@@ -112,7 +113,7 @@ export const level7: LevelConfig = {
       }
     },
     {
-      id: 'A3',
+      id: '008',
       position: 'A3',
       name: '小亮',
       state: 'initial',
@@ -129,26 +130,27 @@ export const level7: LevelConfig = {
       }
     },
     {
-      id: 'B3',
+      id: '200',
       position: 'B3',
       name: '空位',
       state: 'completed',
       identity: {
         isImpostor: false,
-        isRevealed: true
+        isRevealed: true,
+        isBlank: true
       },
       clue: {
         text: '',
-        type: 'direct',
+        type: 'none',
         targetPosition: '',
         highlightNames: [],
         isUsed: true
       }
     },
     {
-      id: 'C3',
+      id: '114',
       position: 'C3',
-      name: '小影-消防员',
+      name: '小影',
       state: 'initial',
       identity: {
         isImpostor: false,
@@ -163,7 +165,7 @@ export const level7: LevelConfig = {
       }
     },
     {
-      id: 'A4',
+      id: '009',
       position: 'A4',
       name: '阿茜',
       state: 'revealed',
@@ -172,7 +174,7 @@ export const level7: LevelConfig = {
         isRevealed: true
       },
       clue: {
-        text: '在我的两个邻居中，有一个坏人，他和我已经...',
+        text: '在我的两个邻居中，有一个坏蛋他和我同行',
         type: 'relation',
         targetPosition: 'B4',
         highlightNames: [],
@@ -180,7 +182,7 @@ export const level7: LevelConfig = {
       }
     },
     {
-      id: 'B4',
+      id: '010',
       position: 'B4',
       name: '阿冬',
       state: 'initial',
@@ -197,7 +199,7 @@ export const level7: LevelConfig = {
       }
     },
     {
-      id: 'C4',
+      id: '003',
       position: 'C4',
       name: '阿雄',
       state: 'initial',

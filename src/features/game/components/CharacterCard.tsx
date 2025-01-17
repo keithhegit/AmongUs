@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import { useState, useEffect } from 'react';
-import type { Character } from '@/shared/types/game';
+import type { Character } from '@/shared/types/character';
 import { cn } from '@/lib/utils';
 import citizensData from '@/features/game/data/citizens.json';
+import professionsData from '@/features/game/data/professions.json';
 
 interface CharacterCardProps {
   character: Character;
@@ -10,8 +11,26 @@ interface CharacterCardProps {
   onClick: () => void;
 }
 
-// 生成市民图片路径
-function getCitizenImagePath(citizenId: string): string {
+// 生成角色图片路径
+function getCitizenImagePath(citizenId: string, position?: string): string {
+  // 空位卡片
+  if (citizenId === '200') {
+    return '/src/assets/images/professions/200-blank-no.png';
+  }
+  
+  // 职业角色的ID范围: 101-200
+  const isProfession = parseInt(citizenId) >= 101 && parseInt(citizenId) <= 200;
+  
+  if (isProfession) {
+    // 如果是职业角色，从professions.json中查找
+    const profession = professionsData.professions.find(p => p.id === citizenId);
+    if (profession) {
+      const { id, gender, feature, clothing } = profession;
+      return `/src/assets/images/professions/${id}-${clothing}-${gender}-${feature}.png`;
+    }
+  }
+  
+  // 其他情况都视为普通市民
   const citizen = citizensData.citizens.find(c => c.id === citizenId);
   if (!citizen) return '';
   
@@ -34,13 +53,32 @@ export const CharacterCard = observer(({
 
   useEffect(() => {
     if (id) {
-      const citizen = citizensData.citizens.find(c => c.id === id);
-      if (citizen) {
-        setGender(citizen.gender as 'boy' | 'girl');
-        setImagePath(getCitizenImagePath(id));
+      // 空位卡片
+      if (id === '200') {
+        setImagePath('/src/assets/images/professions/200-blank-no.png');
+        return;
+      }
+
+      // 职业角色的ID范围: 101-200
+      const isProfession = parseInt(id) >= 101 && parseInt(id) <= 200;
+      
+      if (isProfession) {
+        // 如果是职业角色，从professions.json中查找性别
+        const profession = professionsData.professions.find(p => p.id === id);
+        if (profession) {
+          setGender(profession.gender as 'boy' | 'girl');
+          setImagePath(getCitizenImagePath(id, position));
+        }
+      } else {
+        // 如果是普通市民，从citizens.json中查找性别
+        const citizen = citizensData.citizens.find(c => c.id === id);
+        if (citizen) {
+          setGender(citizen.gender as 'boy' | 'girl');
+          setImagePath(getCitizenImagePath(id, position));
+        }
       }
     }
-  }, [id]);
+  }, [id, position]);
 
   // 修改线索显示条件：只要角色被揭示就显示线索
   const shouldShowClue = clue && (state === 'revealed' || state === 'completed');
@@ -49,6 +87,7 @@ export const CharacterCard = observer(({
   let pressTimer: NodeJS.Timeout;
   
   const handleMouseDown = () => {
+    if (identity.isBlank) return; // 空位不响应长按
     pressTimer = setTimeout(() => {
       setShowZoomed(true);
     }, 500);
@@ -59,6 +98,7 @@ export const CharacterCard = observer(({
   };
 
   const handleTouchStart = () => {
+    if (identity.isBlank) return; // 空位不响应长按
     pressTimer = setTimeout(() => {
       setShowZoomed(true);
     }, 500);
@@ -67,6 +107,30 @@ export const CharacterCard = observer(({
   const handleTouchEnd = () => {
     clearTimeout(pressTimer);
   };
+
+  // 如果是空位卡片，使用特殊样式
+  if (identity.isBlank) {
+    return (
+      <div 
+        className={cn(
+          "relative w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md",
+          "bg-gray-100"  // 空位使用灰色背景
+        )}
+      >
+        {/* 位置标识 - 左上角 */}
+        <div className="absolute top-0 left-0 bg-black/80 text-white px-1.5 py-0.5 text-[min(3vw,14px)] rounded-br">
+          {position}
+        </div>
+        <div className="w-full h-full flex items-center justify-center">
+          <img 
+            src={imagePath}
+            alt="空位"
+            className="w-[85%] h-[85%] object-contain opacity-50"  // 降低透明度
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -100,15 +164,13 @@ export const CharacterCard = observer(({
         {state === 'initial' ? (
           // 未翻开状态：大图片
           <>
-            {imagePath && (
-              <div className="absolute inset-0 flex items-center justify-center p-2">
-                <img 
-                  src={imagePath}
-                  alt={name}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            )}
+            <div className="h-full flex items-center justify-center">
+              <img 
+                src={imagePath}
+                alt={name}
+                className="w-[85%] h-[85%] object-contain"
+              />
+            </div>
             <div className="absolute bottom-0 w-full bg-black/70 py-1">
               <div className="text-white text-center text-[min(3vw,14px)]">
                 {name}
@@ -150,39 +212,18 @@ export const CharacterCard = observer(({
         )}
       </div>
 
-      {/* 放大显示模态框 */}
+      {/* 放大查看模态框 */}
       {showZoomed && (
         <div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
           onClick={() => setShowZoomed(false)}
         >
-          <div 
-            className={cn(
-              "rounded-lg p-4 w-[280px] max-h-[90vh] overflow-y-auto",
-              gender === 'boy' ? "bg-blue-100" : "bg-pink-100"
-            )}
-            onClick={e => e.stopPropagation()}
-          >
-            {imagePath && (
-              <div className="w-32 h-32 mx-auto mb-4">
-                <img 
-                  src={imagePath}
-                  alt={name}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            )}
-            <div className="text-lg font-bold mb-2 text-center">{name}</div>
-            {shouldShowClue && (
-              <div className={cn(
-                "rounded-lg p-3",
-                identity.isImpostor ? "bg-red-600/90" : "bg-black/90"
-              )}>
-                <div className="text-white">
-                  {clue.text}
-                </div>
-              </div>
-            )}
+          <div className="relative w-4/5 max-w-md aspect-[3/4]">
+            <img 
+              src={imagePath}
+              alt={name}
+              className="w-full h-full object-contain"
+            />
           </div>
         </div>
       )}

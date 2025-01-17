@@ -1,5 +1,7 @@
 import type { Character, CharacterState, Clue, ClueType } from './character';
 
+export type { Character };
+
 export interface GameConfig {
   gridSize: number;
   impostorCount: number;

@@ -78,8 +78,14 @@ export class GameStore {
       this.mistakeCount++;
     }
 
-    // 只有在所有卡片都翻开后才检查是否显示结果
-    if (this.revealedPositions.size === this.characters.length) {
+    // 检查是否所有非空位卡片都已翻开
+    const nonBlankCharacters = this.characters.filter(char => !char.identity.isBlank);
+    const revealedNonBlankPositions = Array.from(this.revealedPositions).filter(pos => {
+      const char = this.characters.find(c => c.position === pos);
+      return char && !char.identity.isBlank;
+    });
+
+    if (revealedNonBlankPositions.length === nonBlankCharacters.length) {
       this.showResultModal = true;
     }
 
@@ -89,21 +95,7 @@ export class GameStore {
   nextLevel = () => {
     const nextIndex = this.currentLevelIndex + 1;
     if (nextIndex >= levels.length) {
-      console.log('所有关卡完成！');
-      return;
-    }
-
-    // 前10关不需要金币
-    if (nextIndex < 10) {
-      this.currentLevelIndex = nextIndex;
-      this.initLevel(levels[nextIndex]);
-      return;
-    }
-
-    // 第10关之后的金币要求
-    const requiredCoins = (nextIndex - 9) * 100; // 从第11关开始，每关增加100金币
-    if (this.coins < requiredCoins) {
-      console.log(`需要${requiredCoins}金币才能解锁下一关`);
+      console.log('所有关卡完成！\n你耗光了基夫的脑力，\n请期待新关卡更新！');
       return;
     }
 
@@ -122,9 +114,16 @@ export class GameStore {
   }
 
   get isVictory() {
+    // 获取非空位卡片
+    const nonBlankCharacters = this.characters.filter(char => !char.identity.isBlank);
+    const revealedNonBlankPositions = Array.from(this.revealedPositions).filter(pos => {
+      const char = this.characters.find(c => c.position === pos);
+      return char && !char.identity.isBlank;
+    });
+
     return (
-      // 所有卡片都被翻开
-      this.revealedPositions.size === this.characters.length &&
+      // 所有非空位卡片都被翻开
+      revealedNonBlankPositions.length === nonBlankCharacters.length &&
       // 且找出了所有坏人
       this.remainingImpostors === 0 &&
       // 且失败次数未达上限
@@ -133,9 +132,15 @@ export class GameStore {
   }
 
   get progress() {
+    const nonBlankCharacters = this.characters.filter(char => !char.identity.isBlank);
+    const revealedNonBlankPositions = Array.from(this.revealedPositions).filter(pos => {
+      const char = this.characters.find(c => c.position === pos);
+      return char && !char.identity.isBlank;
+    });
+    
     return {
-      revealed: this.revealedPositions.size,  // 已翻开的卡片数
-      total: this.characters.length           // 总卡片数
+      revealed: revealedNonBlankPositions.length,  // 已翻开的非空位卡片数
+      total: nonBlankCharacters.length             // 总非空位卡片数
     };
   }
 }

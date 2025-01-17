@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { CharacterCard } from './CharacterCard';
 import { RoleToggle } from './RoleToggle';
+import { GameResultModal } from './GameResultModal';
 import { useStore } from '@/providers/StoreProvider';
 import type { Character } from '@/shared/types/game';
 
@@ -69,6 +70,9 @@ export const GameLayout = observer(() => {
 
       {/* 底部控制栏 */}
       <RoleToggle />
+
+      {/* 结算弹窗 */}
+      <GameResultModal />
     </div>
   );
 });

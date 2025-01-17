@@ -1,6 +1,6 @@
 export type CharacterGender = 'male' | 'female';
 export type CharacterState = 'initial' | 'revealed' | 'completed';
-export type ClueType = 'direct' | 'neighbor' | 'area' | 'relation' | 'deception' | 'behavior';
+export type ClueType = 'direct' | 'neighbor' | 'area' | 'relation' | 'deception' | 'behavior' | 'none';
 
 export interface Clue {
   text: string;
@@ -23,6 +23,7 @@ export interface Character {
   identity: {
     isImpostor: boolean;
     isRevealed: boolean;
+    isBlank?: boolean;  // 新增：标记是否为空位
   };
   
   // 视觉信息
