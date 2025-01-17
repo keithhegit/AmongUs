@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/providers/StoreProvider';
@@ -14,6 +14,7 @@ import level6 from '../../../assets/images/levelcard/level6.png';
 import level7 from '../../../assets/images/levelcard/level7.png';
 import levelBottom from '../../../assets/images/levelbottom.png';
 import backBtn from '../../../assets/images/Triangle-Arrow-Turn-Backward.png';
+import { audioService } from '@/shared/services/AudioService';
 
 const levelCards = [
   level1,
@@ -29,6 +30,16 @@ export const MainMenu = observer(() => {
   const navigate = useNavigate();
   const { gameStore } = useStore();
   const [showLevels, setShowLevels] = React.useState(false);
+
+  useEffect(() => {
+    // 播放主菜单BGM
+    audioService.playMenuBGM();
+    
+    // 组件卸载时停止BGM
+    return () => {
+      audioService.stopMenuBGM();
+    };
+  }, []);
 
   const handleStartGame = () => {
     gameStore.initLevel(levels[0]);

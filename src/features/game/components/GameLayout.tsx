@@ -1,13 +1,25 @@
 import { observer } from 'mobx-react-lite';
+import React, { useEffect } from 'react';
 import { CharacterCard } from './CharacterCard';
 import { RoleToggle } from './RoleToggle';
 import { GameResultModal } from './GameResultModal';
 import { useStore } from '@/providers/StoreProvider';
 import type { Character } from '@/shared/types/game';
+import { audioService } from '@/shared/services/AudioService';
 
 export const GameLayout = observer(() => {
   const { gameStore } = useStore();
   const { characters, handleCharacterClick } = gameStore;
+
+  useEffect(() => {
+    // 播放游戏BGM
+    audioService.playGameplayBGM();
+    
+    // 组件卸载时停止BGM
+    return () => {
+      audioService.stopGameplayBGM();
+    };
+  }, []);
 
   if (!gameStore.currentLevel) {
     return (

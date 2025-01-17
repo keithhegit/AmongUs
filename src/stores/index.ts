@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import type { Character, LevelConfig } from '@/shared/types/game';
 import { levels } from '@/data/levels';
+import { eventService } from '@/shared/services/EventService';
 
 export class GameStore {
   currentLevel: LevelConfig | null = null;
@@ -74,8 +75,18 @@ export class GameStore {
       }
       character.state = 'completed';
       this.coins += 10;
+      // 发出判断成功事件
+      eventService.emit('JUDGMENT_SUCCESS');
     } else {
+      character.state = 'initial';
+      character.identity.isRevealed = false;
+      this.revealedPositions.delete(position);
       this.mistakeCount++;
+      if (this.mistakeCount >= this.maxMistakes) {
+        this.showResultModal = true;
+      }
+      // 发出判断失败事件
+      eventService.emit('JUDGMENT_FAILURE');
     }
 
     // 检查是否所有非空位卡片都已翻开
