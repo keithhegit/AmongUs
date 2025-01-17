@@ -1,5 +1,10 @@
 # Among Us PWA
 
+## 部署步骤
+### 下载依赖：git clone之后首先在项目根目录运行 yarn install
+### 调试代码：项目根目录运行 npm run dev
+### 构建代码：项目根目录运行 npm run build
+
 ## 更新日志
 
 ### 2024-01-xx 更新
