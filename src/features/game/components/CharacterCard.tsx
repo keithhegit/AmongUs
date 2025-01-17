@@ -15,7 +15,7 @@ interface CharacterCardProps {
 function getCitizenImagePath(citizenId: string, position?: string): string {
   // 空位卡片
   if (citizenId === '200') {
-    return '/src/assets/images/professions/200-blank-no.png';
+    return new URL('../../../assets/images/professions/200-blank-no.png', import.meta.url).href;
   }
   
   // 职业角色的ID范围: 101-200
@@ -26,7 +26,7 @@ function getCitizenImagePath(citizenId: string, position?: string): string {
     const profession = professionsData.professions.find(p => p.id === citizenId);
     if (profession) {
       const { id, gender, feature, clothing } = profession;
-      return `/src/assets/images/professions/${id}-${clothing}-${gender}-${feature}.png`;
+      return new URL(`../../../assets/images/professions/${id}-${clothing}-${gender}-${feature}.png`, import.meta.url).href;
     }
   }
   
@@ -38,7 +38,7 @@ function getCitizenImagePath(citizenId: string, position?: string): string {
   const paddedId = id.padStart(3, '0');
   const featurePart = feature === 'none' ? '' : `-${feature}`;
   
-  return `/src/assets/images/citizens/${paddedId}-${gender}-citizen${featurePart}-${clothing}.png`;
+  return new URL(`../../../assets/images/citizens/${paddedId}-${gender}-citizen${featurePart}-${clothing}.png`, import.meta.url).href;
 }
 
 export const CharacterCard = observer(({ 
