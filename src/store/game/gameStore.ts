@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import type { Character } from '@/shared/types';
+import type { Character } from '@/shared/types/character';
 import { levelGenerator } from '@/features/game/utils/generators/levelGenerator';
-import { LOCAL_LEVELS, regenerateLevels } from '@/data/levels/index';
+import { levels } from '@/data/levels/index';
 import { useLevelStore } from '@/store/level/levelStore';
 
 interface GameState {
@@ -42,14 +42,14 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   // 动作实现
   initLevel: (levelNumber) => {
-    if (!levelNumber) {
+    if (!levelNumber || levelNumber < 1 || levelNumber > levels.length) {
       console.error('Invalid level number');
       return;
     }
 
     console.log('Initializing level:', levelNumber);
     
-    const levelConfig = LOCAL_LEVELS[levelNumber];
+    const levelConfig = levels[levelNumber - 1];
     if (!levelConfig) {
       console.error('Level not found:', levelNumber);
       return;
@@ -133,7 +133,18 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   resetAllLevels: () => {
-    const newLevels = regenerateLevels();
-    // 可以在这里添加重置后的其他逻辑
+    // 重置所有关卡
+    set({
+      currentLevel: 1,
+      characters: [],
+      mistakes: 0,
+      isComplete: false,
+      elapsedTime: 0,
+      impostorsFound: 0,
+      totalImpostors: 0,
+      revealedCharacters: [],
+      currentVoteType: 'good',
+      selectedCharacter: null
+    });
   }
 })); 

@@ -1,14 +1,15 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CharacterCard } from './CharacterCard';
 import { RoleToggle } from './RoleToggle';
 import { GameResultModal } from './GameResultModal';
-import { useStore } from '@/providers/StoreProvider';
+import { gameStore } from '@/stores';
 import type { Character } from '@/shared/types/game';
 import { audioService } from '@/shared/services/AudioService';
 
 export const GameLayout = observer(() => {
-  const { gameStore } = useStore();
+  const navigate = useNavigate();
   const { characters, handleCharacterClick } = gameStore;
 
   useEffect(() => {
@@ -21,20 +22,17 @@ export const GameLayout = observer(() => {
     };
   }, []);
 
+  // 检查游戏状态
   if (!gameStore.currentLevel) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl text-gray-600">加载中...</div>
-      </div>
-    );
+    console.log('游戏未初始化，返回主菜单');
+    navigate('/');
+    return null;
   }
 
   if (!characters || characters.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl text-gray-600">没有角色数据</div>
-      </div>
-    );
+    console.log('角色数据不存在，返回主菜单');
+    navigate('/');
+    return null;
   }
 
   // 重新排序角色

@@ -1,8 +1,24 @@
 # Among Us PWA
 
+## 部署步骤
+### 下载依赖：git clone之后首先在项目根目录运行 yarn install
+### 调试代码：项目根目录运行 npm run dev
+### 构建代码：项目根目录运行 npm run build
+
 ## 更新日志
 
 ### 2024-01-xx 更新
+- PWA功能优化
+  - 修改manifest.json配置
+    - 设置display为"fullscreen"以支持全屏显示
+    - 添加orientation为"landscape"以优化横屏显示
+  - 优化PWA安装体验
+    - 支持Windows系统安装
+    - 支持移动设备横屏模式
+  - 修复空位卡片显示问题
+    - 优化图片路径处理逻辑
+    - 使用统一的getCitizenImagePath函数
+    - 确保空位图片正确加载
 - 优化主菜单界面布局
   - 调整"开始游戏"和"选择关卡"按钮位置
   - 移除底部黑色指示条

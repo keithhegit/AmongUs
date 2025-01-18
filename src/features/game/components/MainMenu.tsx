@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { useStore } from '@/providers/StoreProvider';
+import { useUIStore } from '@/store';
+import { gameStore } from '@/stores';
 import { levels } from '@/data/levels';
+import type { LevelConfig } from '@/shared/types/game';
 import clsx from 'clsx';
 import mainBg from '../../../assets/images/main.png';
 import level1 from '../../../assets/images/levelcard/level1.png';
@@ -13,8 +15,10 @@ import level5 from '../../../assets/images/levelcard/level5.png';
 import level6 from '../../../assets/images/levelcard/level6.png';
 import level7 from '../../../assets/images/levelcard/level7.png';
 import levelBottom from '../../../assets/images/levelbottom.png';
-import backBtn from '../../../assets/images/Triangle-Arrow-Turn-Backward.png';
+import backBtn from '@/assets/images/Triangle-Arrow-Turn-Backward.png';
 import { audioService } from '@/shared/services/AudioService';
+import startGameBtn from '@/assets/images/ui/start-game-btn.png';
+import selectLevelBtn from '@/assets/images/ui/select-level-btn.png';
 
 const levelCards = [
   level1,
@@ -28,8 +32,9 @@ const levelCards = [
 
 export const MainMenu = observer(() => {
   const navigate = useNavigate();
-  const { gameStore } = useStore();
+  const uiStore = useUIStore();
   const [showLevels, setShowLevels] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     // 播放主菜单BGM
@@ -42,8 +47,20 @@ export const MainMenu = observer(() => {
   }, []);
 
   const handleStartGame = () => {
-    gameStore.initLevel(levels[0]);
-    navigate('/game');
+    // 使用第一关配置初始化游戏
+    const levelConfig = levels[0];
+    if (!levelConfig) {
+      console.error('关卡配置不存在');
+      return;
+    }
+
+    try {
+      gameStore.initLevel(levelConfig);
+      console.log('游戏初始化成功，正在跳转...');
+      navigate('/game');
+    } catch (error) {
+      console.error('游戏初始化失败:', error);
+    }
   };
 
   const handleSelectLevel = () => {
@@ -51,8 +68,19 @@ export const MainMenu = observer(() => {
   };
 
   const handleLevelSelect = (levelIndex: number) => {
-    gameStore.initLevel(levels[levelIndex]);
-    navigate('/game');
+    const levelConfig = levels[levelIndex];
+    if (!levelConfig) {
+      console.error('关卡配置不存在');
+      return;
+    }
+
+    try {
+      gameStore.initLevel(levelConfig);
+      console.log('游戏初始化成功，正在跳转...');
+      navigate('/game');
+    } catch (error) {
+      console.error('游戏初始化失败:', error);
+    }
   };
 
   const handleBackgroundClick = (e: React.MouseEvent) => {
@@ -78,14 +106,26 @@ export const MainMenu = observer(() => {
             {/* Start Game Button Area */}
             <button 
               onClick={handleStartGame}
-              className="w-[222px] h-[48px] cursor-pointer"
-            />
+              className="relative w-[266px] h-[58px] cursor-pointer flex items-center justify-center"
+            >
+              <img 
+                src={startGameBtn} 
+                alt="开始游戏"
+                className="w-full h-full object-contain"
+              />
+            </button>
             
             {/* Select Level Button Area */}
             <button 
               onClick={handleSelectLevel}
-              className="w-[222px] h-[48px] cursor-pointer"
-            />
+              className="relative w-[266px] h-[58px] cursor-pointer flex items-center justify-center"
+            >
+              <img 
+                src={selectLevelBtn} 
+                alt="选择关卡"
+                className="w-full h-full object-contain"
+              />
+            </button>
           </div>
         )}
 
