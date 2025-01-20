@@ -281,6 +281,70 @@
      - B4: 阿冬 (伪人)
      - C4: 阿雄 (人类)
 
+   #### 第八关
+   - 布局: 4x4
+   - 伪人数量: 5个
+   - 起始位置: C2
+   - 角色列表:
+     - A1: 小莹 (伪人) - 开挂打游戏
+     - A2: 小瑶 (人类)
+     - A3: 小枫 (人类)
+     - A4: 阿芳 (人类)
+     - B1: 小雨 (人类)
+     - B2: 小海 (伪人) - 随地吐痰
+     - B3: 阿成 (伪人)
+     - B4: 小楠 (人类)
+     - C1: 小亮 (人类)
+     - C2: 小莹 (人类) - 起始位置
+     - C3: 小军 (人类)
+     - C4: 小江 (伪人) - 抢车位
+     - D1: 阿宇 (人类)
+     - D2: 阿娟 (伪人) - 故意送人头
+     - D3: 小军 (人类)
+     - D4: 阿翔 (人类)
+
+   #### 第九关
+   - 布局: 4x3
+   - 伪人数量: 3个
+   - 起始位置: A1, B1, A2
+   - 角色列表:
+     - A1: 阿东 (人类) - 起始位置1
+     - A2: 小玲 (人类) - 起始位置3
+     - A3: 小广 (人类)
+     - A4: 阿慧 (伪人) - 骗老太太买保健品
+     - B1: 阿兰 (人类) - 起始位置2
+     - B2: 小瑞 (伪人) - 抢车位
+     - B3: 小青 (人类)
+     - B4: 阿翔 (人类)
+     - C1: 阿成 (人类)
+     - C2: 阿蕾 (伪人) - 抢车位
+     - C3: 小晨 (人类)
+     - C4: 小凡 (人类)
+
+   #### 第十关
+   - 布局: 4x5
+   - 伪人数量: 4个
+   - 起始位置: C1, D3, B5
+   - 空位: B1, A2, D5
+   - 角色列表:
+     - A1: 小楠 (人类)
+     - A3: 阿震 (人类)
+     - A4: 阿洁 (伪人) - 偷看别人手机
+     - A5: 小雨 (人类)
+     - B2: 阿雪 (人类)
+     - B3: 小瑞 (人类)
+     - B4: 小才 (伪人) - 随地吐痰
+     - B5: 阿凯 (人类) - 起始位置3
+     - C1: 阿航 (人类) - 起始位置1
+     - C2: 小刚 (伪人) - 打车不付账款
+     - C3: 小航 (人类)
+     - C4: 小洁 (人类)
+     - C5: 小青 (人类)
+     - D1: 小瑞 (伪人) - 顺手牵羊
+     - D2: 小婉 (人类)
+     - D3: 阿伟 (人类) - 起始位置2
+     - D4: 阿静 (人类)
+
 ### 卡片系统
 
 #### 1. 卡片类型
@@ -628,3 +692,329 @@ progress = {
      - 完成时间
      - 错误次数
      - 剩余机会数
+
+## 关卡系统
+
+### 1. 关卡配置文件结构
+
+关卡配置文件位于 `src/data/levels/` 目录下，每个关卡都有独立的配置文件（如 `level1.ts`, `level2.ts` 等）。
+
+#### 1.1 关卡配置主要参数
+```typescript
+export const levelN: LevelConfig = {
+  id: number,           // 关卡ID
+  gridSize: {           // 网格大小
+    rows: number,       // 行数
+    cols: number        // 列数
+  },
+  startPosition: string | string[],  // 初始显示的位置
+  impostorCount: number,  // 伪装者数量
+  characters: Character[], // 角色配置
+  clueFlow: {           // 线索流程
+    steps: ClueFlowStep[]
+  }
+};
+```
+
+#### 1.2 角色配置参数
+```typescript
+{
+  id: string,          // 角色ID，用于匹配图片资源
+  position: string,    // 位置坐标（如'A1', 'B2'等）
+  name: string,        // 角色名称
+  state: string,       // 状态（'initial'/'revealed'等）
+  identity: {          // 身份信息
+    isImpostor: boolean,  // 是否是伪装者
+    isRevealed: boolean   // 是否已显示
+  },
+  clue: {             // 线索信息
+    text: string,     // 线索文本
+    type: ClueType,   // 线索类型
+    targetPosition: string,    // 目标位置
+    highlightNames: string[],  // 高亮显示的名字
+    isUsed: boolean           // 是否已使用
+  }
+}
+```
+
+### 2. 角色图片系统
+
+#### 2.1 图片资源
+- 角色图片存放在 `src/assets/images/citizens/` 目录下
+- 图片ID与性别对应关系定义在 `src/assets/images/citizens/citizens.json` 中
+
+#### 2.2 角色ID规则
+- 男性角色：使用 '001'-'050' 范围的ID
+- 女性角色：使用 '051'-'100' 范围的ID
+- ID必须与 citizens.json 中的性别定义匹配
+
+```json
+// citizens.json 示例
+{
+  "citizens": [
+    {
+      "id": "001",
+      "gender": "boy",
+      "feature": "red-ts",
+      "image": "001-boy-citizen-red-ts.png"
+    },
+    {
+      "id": "051",
+      "gender": "girl",
+      "feature": "brownHair-greyoveralls",
+      "image": "051-girl-citizen-brownHair-greyoveralls.png"
+    }
+  ]
+}
+```
+
+### 3. 新关卡创建教程
+
+#### 第一步：规划关卡内容
+
+1. **确定关卡基本参数**
+   ```typescript
+   {
+     id: number,          // 关卡编号，如 8
+     gridSize: {          // 网格大小
+       rows: number,      // 行数，建议3-5
+       cols: number       // 列数，建议3-5
+     },
+     impostorCount: number  // 伪装者数量，建议2-5个
+   }
+   ```
+
+2. **绘制关卡网格图**
+   ```
+   示例：4x4网格
+   A1 A2 A3 A4
+   B1 B2 B3 B4
+   C1 C2 C3 C4
+   D1 D2 D3 D4
+   ```
+   - 标记起始位置（startPosition）
+   - 标记伪装者位置（用 "I" 表示）
+   - 标记空位（如果有，用 "X" 表示）
+
+3. **设计线索链**
+   - 画出线索传递路径
+   - 确定每个位置的线索类型
+   - 设计线索内容，确保逻辑闭环
+
+#### 第二步：准备角色资源
+
+1. **检查可用角色图片**
+   ```bash
+   # 查看 citizens.json 了解可用角色
+   src/assets/images/citizens/citizens.json
+   ```
+
+2. **角色ID分配规则**
+   - 男性角色：001-050
+   - 女性角色：051-100
+   - 确保ID与性别匹配
+
+3. **创建角色列表**
+   ```typescript
+   // 为每个位置创建角色配置
+   {
+     id: string,        // 从 citizens.json 中选择
+     position: string,  // 网格位置（如'A1'）
+     name: string,      // 角色名称（如'小明'）
+     identity: {
+       isImpostor: boolean,  // 是否是伪装者
+       isRevealed: boolean   // 初始为 false
+     }
+   }
+   ```
+
+#### 第三步：编写关卡配置
+
+1. **创建关卡文件**
+   ```bash
+   # 在 src/data/levels/ 目录下创建新文件
+   touch src/data/levels/level8.ts  # 示例：创建第8关
+   ```
+
+2. **编写基础结构**
+   ```typescript
+   import type { LevelConfig } from '@/shared/types/game';
+
+   export const level8: LevelConfig = {
+     id: 8,
+     gridSize: {
+       rows: 4,
+       cols: 4
+     },
+     startPosition: 'C2',
+     impostorCount: 5,
+     characters: [],
+     clueFlow: {
+       steps: []
+     }
+   };
+   ```
+
+3. **添加角色配置**
+   ```typescript
+   characters: [
+     {
+       id: '001',
+       position: 'A1',
+       name: '小明',
+       state: 'initial',
+       identity: {
+         isImpostor: true,
+         isRevealed: false
+       },
+       clue: {
+         text: '线索内容',
+         type: 'behavior',
+         targetPosition: '',
+         highlightNames: [],
+         isUsed: false
+       }
+     },
+     // ... 其他角色
+   ]
+   ```
+
+4. **设计线索流程**
+   ```typescript
+   clueFlow: {
+     steps: [
+       {
+         round: 1,
+         fromPosition: 'C2',
+         clueType: 'area',
+         targetInfo: {
+           area: 'corners'  // 或 'neighbors', 'row', 'column'
+         }
+       },
+       // ... 其他步骤
+     ]
+   }
+   ```
+
+#### 第四步：注册新关卡
+
+1. **更新关卡索引**
+   ```typescript
+   // src/data/levels/index.ts
+   import { level8 } from './level8';
+   
+   export const levels = [
+     // ... 现有关卡
+     level8
+   ];
+   
+   export { level8 };
+   ```
+
+2. **添加关卡选择图片**
+   - 准备关卡选择界面的图片（建议尺寸：300x200px）
+   - 命名为 `level8.png`
+   - 放置在 `src/assets/images/levelcard/` 目录下
+
+3. **更新主菜单**
+   ```typescript
+   // src/features/game/components/MainMenu.tsx
+   import level8 from '../../../assets/images/levelcard/level8.png';
+   
+   const levelCards = [
+     // ... 现有关卡
+     level8
+   ];
+   ```
+
+#### 第五步：测试和调试
+
+1. **基础检查**
+   - [ ] 所有角色ID与性别是否匹配
+   - [ ] 伪装者数量是否正确
+   - [ ] 起始位置是否合理
+   - [ ] 线索是否构成完整链路
+
+2. **游戏测试**
+   - [ ] 进入关卡是否正常
+   - [ ] 角色图片是否正确显示
+   - [ ] 线索是否按设计传递
+   - [ ] 是否可以找出所有伪装者
+
+3. **常见问题排查**
+   ```typescript
+   // 1. 角色ID性别不匹配
+   // 解决：检查 citizens.json 确认正确的ID
+   
+   // 2. 线索链断裂
+   // 解决：确保 clueFlow 中的位置都是有效的
+   
+   // 3. 图片无法显示
+   // 解决：检查图片路径和导入语句
+   ```
+
+#### 第六步：优化和完善
+
+1. **关卡平衡性调整**
+   - 调整伪装者分布
+   - 优化线索难度
+   - 确保游戏可解性
+
+2. **关卡说明文档**
+   ```markdown
+   ## 第N关设计说明
+   
+   - 网格：4x4
+   - 伪装者：5个
+   - 特殊机制：空位/特殊线索
+   - 难点：xxx
+   - 预期通关时间：xx分钟
+   ```
+
+3. **版本控制**
+   ```bash
+   # 提交新关卡代码
+   git add src/data/levels/level8.ts
+   git add src/data/levels/index.ts
+   git add src/assets/images/levelcard/level8.png
+   git commit -m "feat: add level 8"
+   ```
+
+### 4. 关卡设计建议
+
+1. 难度递进
+- 初始关卡使用较小的网格（如3x3）
+- 随关卡进展增加网格大小和伪装者数量
+- 逐步引入复杂的线索类型
+
+2. 线索设计
+- 确保线索之间有逻辑关联
+- 提供足够信息让玩家推理
+- 避免矛盾或误导性的线索
+
+3. 角色布局
+- 合理分布伪装者位置
+- 设置适当的初始显示位置
+- 考虑线索传递的路径
+
+4. 测试验证
+- 确保所有线索都是可解的
+- 验证角色图片正确显示
+- 测试关卡完成条件
+
+5. 注意事项
+
+1. 类型检查
+- 确保使用正确的类型定义
+- 注意 ClueFlowStep 的 targetInfo 格式
+- 验证所有必需字段都已填写
+
+2. 图片资源
+- 确保所有引用的图片文件存在
+- 检查图片ID与性别匹配
+- 保持图片命名规范
+
+3. 性能考虑
+- 合理控制图片大小
+- 避免过度复杂的线索逻辑
+- 优化关卡加载性能

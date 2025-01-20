@@ -14,6 +14,9 @@ import level4 from '../../../assets/images/levelcard/level4.png';
 import level5 from '../../../assets/images/levelcard/level5.png';
 import level6 from '../../../assets/images/levelcard/level6.png';
 import level7 from '../../../assets/images/levelcard/level7.png';
+import level8 from '../../../assets/images/levelcard/level8.png';
+import level9 from '../../../assets/images/levelcard/level9.png';
+import level10 from '../../../assets/images/levelcard/level10.png';
 import levelBottom from '../../../assets/images/levelbottom.png';
 import backBtn from '@/assets/images/Triangle-Arrow-Turn-Backward.png';
 import { audioService } from '@/shared/services/AudioService';
@@ -28,6 +31,9 @@ const levelCards = [
   level5,
   level6,
   level7,
+  level8,
+  level9,
+  level10
 ];
 
 export const MainMenu = observer(() => {
@@ -178,50 +184,53 @@ export const MainMenu = observer(() => {
                 
                 {/* Second Row */}
                 <div className="flex gap-[10px] mb-[15px]">
-                  <button
-                    onClick={() => handleLevelSelect(3)}
-                    className="w-[110px] h-[85px] cursor-pointer"
-                  >
-                    <img 
-                      src={level4} 
-                      alt="Level 4"
-                      className="w-full h-full object-contain"
-                    />
-                  </button>
-                  <button
-                    onClick={() => handleLevelSelect(4)}
-                    className="w-[110px] h-[85px] cursor-pointer"
-                  >
-                    <img 
-                      src={level5} 
-                      alt="Level 5"
-                      className="w-full h-full object-contain"
-                    />
-                  </button>
-                  <button
-                    onClick={() => handleLevelSelect(5)}
-                    className="w-[110px] h-[85px] cursor-pointer"
-                  >
-                    <img 
-                      src={level6} 
-                      alt="Level 6"
-                      className="w-full h-full object-contain"
-                    />
-                  </button>
+                  {levelCards.slice(3, 6).map((cardImage, index) => (
+                    <button
+                      key={index + 3}
+                      onClick={() => handleLevelSelect(index + 3)}
+                      className="w-[110px] h-[85px] cursor-pointer"
+                    >
+                      <img 
+                        src={cardImage} 
+                        alt={`Level ${index + 4}`}
+                        className="w-full h-full object-contain"
+                      />
+                    </button>
+                  ))}
                 </div>
 
                 {/* Third Row */}
-                <div>
-                  <button
-                    onClick={() => handleLevelSelect(6)}
-                    className="w-[110px] h-[85px] cursor-pointer"
-                  >
-                    <img 
-                      src={level7} 
-                      alt="Level 7"
-                      className="w-full h-full object-contain"
-                    />
-                  </button>
+                <div className="flex gap-[10px] mb-[15px]">
+                  {levelCards.slice(6, 9).map((cardImage, index) => (
+                    <button
+                      key={index + 6}
+                      onClick={() => handleLevelSelect(index + 6)}
+                      className="w-[110px] h-[85px] cursor-pointer"
+                    >
+                      <img 
+                        src={cardImage} 
+                        alt={`Level ${index + 7}`}
+                        className="w-full h-full object-contain"
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {/* Fourth Row */}
+                <div className="flex gap-[10px]">
+                  {levelCards.slice(9).map((cardImage, index) => (
+                    <button
+                      key={index + 9}
+                      onClick={() => handleLevelSelect(index + 9)}
+                      className="w-[110px] h-[85px] cursor-pointer"
+                    >
+                      <img 
+                        src={cardImage} 
+                        alt={`Level ${index + 10}`}
+                        className="w-full h-full object-contain"
+                      />
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

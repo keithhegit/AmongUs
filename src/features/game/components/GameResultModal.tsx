@@ -7,7 +7,7 @@ export const GameResultModal = observer(() => {
 
   if (!showResultModal) return null;
 
-  const isLastLevel = currentLevelIndex === 6;
+  const isLastLevel = currentLevelIndex === 9;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
