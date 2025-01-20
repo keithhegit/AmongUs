@@ -1,0 +1,166 @@
+{
+  "professions": [
+    {
+      "id": "101",
+      "gender": "boy",
+      "feature": "hat",
+      "clothing": "artist"
+    },
+    {
+      "id": "102",
+      "gender": "girl",
+      "feature": "hat",
+      "clothing": "artist"
+    },
+    {
+      "id": "103",
+      "gender": "boy",
+      "feature": "no",
+      "clothing": "athlete"
+    },
+    {
+      "id": "104",
+      "gender": "girl",
+      "feature": "no",
+      "clothing": "athlete"
+    },
+    {
+      "id": "105",
+      "gender": "boy",
+      "feature": "hat",
+      "clothing": "chef"
+    },
+    {
+      "id": "106",
+      "gender": "girl",
+      "feature": "hat",
+      "clothing": "chef"
+    },
+    {
+      "id": "107",
+      "gender": "boy",
+      "feature": "fork",
+      "clothing": "devil"
+    },
+    {
+      "id": "108",
+      "gender": "boy",
+      "feature": "no",
+      "clothing": "doctor"
+    },
+    {
+      "id": "109",
+      "gender": "girl",
+      "feature": "no",
+      "clothing": "doctor"
+    },
+    {
+      "id": "110",
+      "gender": "boy",
+      "feature": "hat",
+      "clothing": "engineer"
+    },
+    {
+      "id": "111",
+      "gender": "girl",
+      "feature": "hat",
+      "clothing": "engineer"
+    },
+    {
+      "id": "112",
+      "gender": "boy",
+      "feature": "hat",
+      "clothing": "farmer"
+    },
+    {
+      "id": "113",
+      "gender": "girl",
+      "feature": "hat",
+      "clothing": "farmer"
+    },
+    {
+      "id": "114",
+      "gender": "boy",
+      "feature": "hat",
+      "clothing": "firefighter"
+    },
+    {
+      "id": "115",
+      "gender": "girl",
+      "feature": "hat",
+      "clothing": "firefighter"
+    },
+    {
+      "id": "116",
+      "gender": "boy",
+      "feature": "beard",
+      "clothing": "magician"
+    },
+    {
+      "id": "117",
+      "gender": "girl",
+      "feature": "glass",
+      "clothing": "magician"
+    },
+    {
+      "id": "118",
+      "gender": "boy",
+      "feature": "mask",
+      "clothing": "nurse"
+    },
+    {
+      "id": "119",
+      "gender": "girl",
+      "feature": "hat",
+      "clothing": "nurse"
+    },
+    {
+      "id": "120",
+      "gender": "boy",
+      "feature": "hat",
+      "clothing": "police"
+    },
+    {
+      "id": "121",
+      "gender": "girl",
+      "feature": "hat",
+      "clothing": "police"
+    },
+    {
+      "id": "122",
+      "gender": "boy",
+      "feature": "crown",
+      "clothing": "prince"
+    },
+    {
+      "id": "123",
+      "gender": "girl",
+      "feature": "crown",
+      "clothing": "princess"
+    },
+    {
+      "id": "124",
+      "gender": "boy",
+      "feature": "glass",
+      "clothing": "scientist"
+    },
+    {
+      "id": "125",
+      "gender": "girl",
+      "feature": "glass",
+      "clothing": "scientist"
+    },
+    {
+      "id": "126",
+      "gender": "boy",
+      "feature": "no",
+      "clothing": "waitress"
+    },
+    {
+      "id": "127",
+      "gender": "girl",
+      "feature": "no",
+      "clothing": "waitress"
+    }
+  ]
+} 

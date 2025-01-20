@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import type { Character, LevelConfig } from '@/shared/types';
+import type { Character, LevelConfig } from '@/shared/types/game';
 
 class GameStore {
   currentLevel: LevelConfig | null = null;
@@ -16,12 +16,33 @@ class GameStore {
   }
 
   initLevel(level: LevelConfig) {
-    this.currentLevel = level;
-    this.characters = level.characters;
-    this.currentRound = 0;
-    this.mistakeCount = 0;
-    this.revealedPositions = new Set([level.startPosition]);
-    this.judgeMode = 'good';
+    if (!level || !level.characters || !level.startPosition) {
+      console.error('无效的关卡配置:', level);
+      return;
+    }
+
+    try {
+      this.currentLevel = level;
+      const startPositions = Array.isArray(level.startPosition) 
+        ? level.startPosition 
+        : [level.startPosition];
+
+      this.characters = level.characters.map((char: Character) => ({
+        ...char,
+        state: startPositions.includes(char.position) ? 'revealed' : 'initial',
+        identity: {
+          ...char.identity,
+          isRevealed: startPositions.includes(char.position)
+        }
+      }));
+      this.currentRound = 0;
+      this.mistakeCount = 0;
+      this.revealedPositions = new Set(startPositions);
+      this.judgeMode = 'good';
+      console.log('关卡初始化成功:', level.id);
+    } catch (error) {
+      console.error('关卡初始化失败:', error);
+    }
   }
 
   handleCharacterClick(position: string) {

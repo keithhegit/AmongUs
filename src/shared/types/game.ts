@@ -1,43 +1,6 @@
-export enum ClueType {
-  LOCATION = 'location',
-  BEHAVIOR = 'behavior',
-  RELATION = 'relation',
-  PROFESSION = 'profession',
-  TESTIMONY = 'testimony',
-  REACTION = 'reaction',
-  SYSTEM = 'system'
-}
+import type { Character, CharacterState, Clue, ClueType } from './character';
 
-export interface Clue {
-  id: string;
-  clue_id: string;
-  main_type: ClueType;
-  sub_type: string;
-  clue_text: string;
-  reliability: number;
-  complexity: number;
-  is_template: boolean;
-  variables: string[];
-}
-
-export interface Character {
-  id: string;
-  position: string;
-  name: string;
-  state: 'initial' | 'revealed' | 'completed';
-  identity: {
-    isImpostor: boolean;
-    isRevealed: boolean;
-  };
-  clue: {
-    text: string;
-    type: 'direct' | 'neighbor' | 'area' | 'relation' | 'deception' | 'behavior';
-    targetPosition?: string;
-    targetArea?: string;
-    highlightNames: string[];
-    isUsed: boolean;
-  };
-}
+export type { Character };
 
 export interface GameConfig {
   gridSize: number;
@@ -85,6 +48,16 @@ export enum GameStatus {
   FAILED = 'failed'
 }
 
+export interface ClueFlowStep {
+  round: number;
+  fromPosition: string;
+  clueType: ClueType;
+  targetInfo: {
+    position?: string;
+    area?: string;
+  };
+}
+
 export interface LevelConfig {
   id: number;
   gridSize: {
@@ -95,14 +68,6 @@ export interface LevelConfig {
   impostorCount: number;
   characters: Character[];
   clueFlow: {
-    steps: {
-      round: number;
-      fromPosition: string;
-      clueType: 'direct' | 'neighbor' | 'area' | 'relation';
-      targetInfo: {
-        position?: string;
-        area?: string;
-      };
-    }[];
+    steps: ClueFlowStep[];
   };
 }

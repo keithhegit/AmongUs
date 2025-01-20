@@ -1,0 +1,76 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\zhouyiwei\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
+
+PATH: 
+  c:\Users\zhouyiwei\AppData\Local\Programs\cursor\resources\app\bin;C:\Program Files (x86)\ShadowBot;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Python310\Scripts\;C:\Python310\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;D:\Android\Sdk\platform-tools;C:\ProgramData\ComposerSetup\bin;D:\Program Files (x86)\apache-maven-3.8.5\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Java\jdk-17.0.5\bin;C:\Program Files\Java\jdk-17.0.5\jre\bin;C:\Program Files\Bandizip\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\ShadowBot;C:\Users\zhouyiwei\AppData\Local\Microsoft\WindowsApps;C:\Users\zho;C:\Program Files\CursorModifier;C:\Program Files\Go\bin;C:\Program Files\nodejs\;C:\Users\zhouyiwei\AppData\Local\Programs\Microsoft VS Code\bin;D:\Software\xampp\php;C:\Users\zhouyiwei\AppData\Roaming\Composer\vendor\bin;C:\Program Files\Git\bin;C:\Program Files\Git\mingw64\libexec\git-core;C:\Program Files\Git\mingw64\bin;D:\Software\redis;D:\Program Files (x86)\Fiddler;C:\Users\zhouyiwei\AppData\Local\JetBrains\Toolbox\scripts;C:\Program Files\cpolar\;D:\Program Files\Huawei\DevEco Studio\bin;C:\Users\zhouyiwei\go\bin;C:\Users\zhouyiwei\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  22.13.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: http://nexus.hongmeng-info.com/repository/kestrel-npm-group/clsx: socket hang up
+      at Socket.socketOnEnd (node:_http_client:542:25)
+      at Socket.emit (node:events:536:35)
+      at endReadableNT (node:internal/streams/readable:1698:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+npm manifest: 
+  {
+    "name": "who-is-spy",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+      "dev": "vite",
+      "build": "cross-env NODE_ENV=production tsc && vite build",
+      "test": "jest",
+      "test:watch": "jest --watch",
+      "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    },
+    "dependencies": {
+      "clsx": "2.1.1",
+      "framer-motion": "11.15.0",
+      "mobx": "^6.12.0",
+      "mobx-react-lite": "^4.0.5",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "react-router-dom": "7.1.1",
+      "tailwind-merge": "2.6.0"
+    },
+    "devDependencies": {
+      "@testing-library/jest-dom": "^6.4.2",
+      "@testing-library/react": "^14.2.1",
+      "@types/jest": "^29.5.12",
+      "@types/node": "^20.11.19",
+      "@types/react": "^18.2.55",
+      "@types/react-dom": "^18.2.19",
+      "@typescript-eslint/eslint-plugin": "^6.21.0",
+      "@typescript-eslint/parser": "^6.21.0",
+      "@vitejs/plugin-react": "^4.2.1",
+      "autoprefixer": "^10.4.17",
+      "cross-env": "7.0.3",
+      "eslint": "^8.56.0",
+      "eslint-plugin-react-hooks": "^4.6.0",
+      "eslint-plugin-react-refresh": "^0.4.5",
+      "jest": "^29.7.0",
+      "jest-environment-jsdom": "^29.7.0",
+      "postcss": "^8.4.35",
+      "tailwindcss": "^3.4.1",
+      "ts-jest": "^29.1.2",
+      "typescript": "^5.2.2",
+      "vite": "^5.1.0",
+      "vite-plugin-pwa": "0.21.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

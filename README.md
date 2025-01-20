@@ -1,4 +1,41 @@
-# Among Us
+# Among Us PWA
+
+## 部署步骤
+### 下载依赖：git clone之后首先在项目根目录运行 yarn install
+### 调试代码：项目根目录运行 npm run dev
+### 构建代码：项目根目录运行 npm run build
+
+## 更新日志
+
+### 2024-01-xx 更新
+- PWA功能优化
+  - 修改manifest.json配置
+    - 设置display为"fullscreen"以支持全屏显示
+    - 添加orientation为"landscape"以优化横屏显示
+  - 优化PWA安装体验
+    - 支持Windows系统安装
+    - 支持移动设备横屏模式
+  - 修复空位卡片显示问题
+    - 优化图片路径处理逻辑
+    - 使用统一的getCitizenImagePath函数
+    - 确保空位图片正确加载
+- 优化主菜单界面布局
+  - 调整"开始游戏"和"选择关卡"按钮位置
+  - 移除底部黑色指示条
+- 重构关卡选择界面
+  - 添加蓝色背景和圆角设计
+  - 优化关卡卡片布局和间距
+  - 修正关卡卡片显示顺序
+  - 添加右上角返回按钮
+  - 支持点击空白区域返回主菜单
+- 新增空位卡片系统
+  - 使用特定图片资源 (200-blank-no.png)
+  - 默认处于已完成状态
+  - 不计入进度统计
+  - 不可点击交互
+- 优化关卡完成提示
+  - 最后一关显示特殊提示文本
+  - 移除最后一关的"下一关"按钮
 
 ## 游戏规则
 
@@ -9,340 +46,175 @@
 - 需要找出所有内鬼且翻开所有卡片才能获胜
 
 ### 关卡系统
-1. **关卡解锁条件**
-   - 第1-10关：完成上一关后自动解锁，无金币要求
-   - 第11关起：需要满足金币要求
-     - 第11关：需要100金币
-     - 第12关：需要200金币
-     - 第13关：需要300金币
-     - 以此类推...
+1. **关卡数量**
+   - 目前共有7个关卡（0-6）
+   - 每关难度递增
+   - 最后一关完成后显示特殊结束文本
 
-2. **关卡奖励**
-   - 每次正确判断：+10金币
-   - 完美通关(无失误)：额外+20金币
-   - 观看广告：双倍金币奖励
+2. **关卡解锁**
+   - 完成当前关卡后自动解锁下一关
+   - 支持重新挑战已解锁关卡
 
 3. **关卡进度**
-   - 进度保存：自动保存已解锁的关卡和获得的金币
-   - 重玩机制：已解锁的关卡可以随时重玩
-   - 进度显示：顶部显示当前关卡进度(X/Y)和累计金币数
+   - 进度计算：已翻开卡片数/总卡片数
+   - 空位卡片不计入进度统计
+   - 自动保存已解锁的关卡进度
 
-### 网格布局
-- 游戏使用 3x3 的网格布局
-- 网格按照以下方式排序:
-  ```
-  A1 B1 C1  (第1行)
-  A2 B2 C2  (第2行)
-  A3 B3 C3  (第3行)
-  ```
-- 位置编码规则：
-  - 列名使用英文字母（A、B、C）
-  - 行号使用数字（1、2、3）
-  - 例如：A1 表示第一行第一列，B2 表示第二行第二列
+### 卡片系统
 
-### 角色排序逻辑
-```typescript
-characters.sort((a, b) => {
-  const posA = a.position;
-  const posB = b.position;
-  return posA.localeCompare(posB);
-});
-```
+#### 1. 卡片类型
+1. **普通角色卡片**
+   - 可点击交互
+   - 有对应的线索文本
+   - 计入进度统计
+   - 需要进行好人/坏人判定
 
-### 游戏流程
-1. 游戏开始时，随机一个好人角色被揭示
-2. 玩家可以通过点击角色查看其线索
-3. 根据线索判断角色身份（好人/坏人）
-4. 正确判断可以继续游戏，错误判断会增加失误计数
-5. 找出所有坏人即可通关
+2. **空位卡片**
+   - 使用特定图片 (200-blank-no.png)
+   - 默认完成状态
+   - 不可点击
+   - 不计入进度
+   - 不需要判定
 
-## 开发说明
-
-### 位置系统
-- 使用字母+数字的组合表示位置（如 A1、B2、C3）
-- 字母表示列（从左到右：A、B、C）
-- 数字表示行（从上到下：1、2、3）
-- 位置编码在角色数据和线索系统中广泛使用
-
-### 注意事项
-- 确保角色数据的 position 属性符合编码规则
-- 网格渲染时需要按照行列顺序排序
-- 线索系统中的位置引用需要与网格位置对应
-
-## 游戏核心机制
-
-### 1. 线索推进机制
-
-每局游戏（以9人为例）的线索推进：
-
-1. 开局状态：
-   - A2位置角色处于好人状态（已开启）
-   - 其他8个位置都是未开启状态
-   - 只有1个坏人，位置未知
-
-2. 线索类型：
-   ```typescript
-   type ClueType = 
-     | '直接信任' // "C3是好人，他帮过我"
-     | '邻居提示' // "B2的邻居里有坏人"
-     | '区域排除' // "A区的都是好人"
-     | '关系证明' // "我和C1共事多年"
-   ```
-
-3. 线索推进示例：
-   ```
-   第1轮：A2(开局好人) → "C3是好人，他帮过我"
-   第2轮：C3(被点开) → "B2的邻居里有坏人"
-   第3轮：B1(被点开) → "A排没有坏人"
-   第4轮：B2(被点开) → "C1和我一起工作"
-   第5轮：C1(被点开) → "A3很老实"
-   第6轮：A3(被点开) → "C2不可能是坏人"
-   第7轮：C2(被点开) → "只有B3很可疑"
-   最终：B3被确认是坏人
-   ```
-
-### 2. 游戏循环
-
-1. 阅读当前线索
-2. 分析可能性：
-   - 直接信任：确认好人
-   - 邻居提示：缩小范围
-   - 区域排除：排除选项
-   - 关系证明：建立联系
-3. 选择下一个要点开的角色
-4. 获取新线索
-5. 重复步骤1-4直到：
-   - 收集足够线索
-   - 排除所有其他可能
-   - 确定坏人位置
-
-### 3. 线索生成规则
-
-```typescript
-interface ClueConfig {
-  round: number;        // 第几轮线索
-  fromPosition: string; // 从哪个位置给出
-  clueType: ClueType;   // 线索类型
-  targetInfo: {
-    position?: string;  // 指向位置
-    area?: string;      // 指向区域
-    neighbors?: string; // 邻居范围
-  };
-}
-
-// 示例：生成第一轮线索
-function generateFirstClue(): ClueConfig {
-  return {
-    round: 1,
-    fromPosition: 'A2',
-    clueType: '直接信任',
-    targetInfo: {
-      position: 'C3'
-    }
-  };
-}
-
-// 示例：生成中间轮线索
-function generateMiddleClue(round: number): ClueConfig {
-  return {
-    round: round,
-    fromPosition: 'B2',
-    clueType: '邻居提示',
-    targetInfo: {
-      neighbors: 'B2'
-    }
-  };
-}
-```
-
-### 4. 状态转换系统
-
+#### 2. 卡片状态
 ```typescript
 type CharacterState = 'initial' | 'revealed' | 'completed';
-
-interface StateTransition {
-  from: CharacterState;
-  to: CharacterState;
-  trigger: 'click' | 'reveal' | 'complete';
-  condition: {
-    isImpostor: boolean;
-    hasBeenRevealed: boolean;
-  };
-}
-
-const stateTransitions: StateTransition[] = [
-  {
-    from: 'initial',
-    to: 'revealed',
-    trigger: 'click',
-    condition: { isImpostor: false, hasBeenRevealed: false }
-  },
-  {
-    from: 'revealed',
-    to: 'completed',
-    trigger: 'complete',
-    condition: { isImpostor: true, hasBeenRevealed: true }
-  }
-];
-```
-
-## 关卡设计
-
-### 关卡概览
-- 每个关卡使用`LevelConfig`类型定义配置
-- 关卡难度通过以下方式递进：
-  - 增加网格大小
-  - 增加坏人数量
-  - 引入职业系统
-  - 复杂化线索链
-
-### 关卡数据结构
-```typescript
-interface LevelConfig {
-  id: number;
-  gridSize: {
-    rows: number;
-    cols: number;
-  };
-  startPosition: string;
-  impostorCount: number;
-  characters: Character[];
-}
 
 interface Character {
   id: string;
   position: string;
   name: string;
-  state: 'initial' | 'revealed' | 'completed';
+  state: CharacterState;
   identity: {
     isImpostor: boolean;
     isRevealed: boolean;
+    isBlank?: boolean;    // 新增：标识空位卡片
   };
   clue: {
     text: string;
-    type: 'direct' | 'area' | 'behavior' | 'relation';
+    type: ClueType;
     targetPosition?: string;
     highlightNames: string[];
     isUsed: boolean;
   };
 }
+
+type ClueType = 'direct' | 'area' | 'behavior' | 'relation' | 'none';  // 新增：none 类型用于空位
 ```
 
-### 第一关
-- 网格大小：3x3
-- 起始位置：A2
-- 坏人数量：2 (A3和B1)
-- 线索链：
-  1. A1 -> B1：监控线索，指出B1和A3可疑
-  2. A2 -> C3：区域线索，提示大明负责的区域
-  3. A3(坏人) -> 随机线索
-  4. B1(坏人) -> 随机线索
-  5. B2 -> C1：关系线索，提到和福贵的关系
-  6. B3 -> C2：行为线索，提到值班室事件
-  7. C1 -> B3：行为线索，关于仓库钥匙
-  8. C2 -> A1：行为线索，要求查看监控
-  9. C3 -> B2：关系线索，提到阿杰查监控室
+#### 3. 卡片显示样式
 
-### 第二关
-- 网格大小：2x3
-- 起始位置：A1
-- 坏人数量：1 (B2)
-- 线索链：
-  1. A1 -> B1：邻居规则说明
-  2. B1 -> C1：斜角邻居提示
-  3. C1 -> A2：通关条件提示
-  4. A2 -> B2(坏人)：直接举报
-  5. B2(坏人) -> C2：随机线索
-  6. C2 -> A1：结束提示
+##### 3.1 未翻开状态
+- 大图显示：占满整个卡片空间
+- 底部名字栏：半透明黑色背景
+```tsx
+<div className="absolute inset-0 flex items-center justify-center p-2">
+  <img className="w-full h-full object-contain" />
+</div>
+<div className="absolute bottom-0 w-full bg-black/70 py-1">
+  <div className="text-white text-center text-[min(3vw,14px)]">{name}</div>
+</div>
+```
 
-### 第三关
-- 网格大小：3x3
-- 起始位置：A1
-- 坏人数量：4 (B1, C2, A2, B3)
-- 线索链：
-  1. A1 -> B1：绑架事件线索
-  2. B1(坏人) -> C1：随机线索
-  3. C1 -> C2：区域线索
-  4. A2(坏人) -> A3：关于妻子的线索
-  5. B2 -> A2：钱包事件线索
-  6. C2(坏人) -> B2：随机线索
-  7. A3 -> B3：关于丈夫的线索
-  8. B3(坏人) -> C3：随机线索
-  9. C3 -> B2：邻居确认线索
+##### 3.2 已翻开状态
+- 图片区域：30% 高度，浅色背景
+- 文本区域：70% 高度，深色背景
+```tsx
+<div className="h-full flex flex-col p-2">
+  <div className="w-full h-[30%] flex items-center justify-center bg-white/50 rounded-t">
+    <div className="w-[85%] h-[85%]">
+      <img className="w-full h-full object-contain" />
+    </div>
+  </div>
+  <div className="w-full h-[70%] rounded-b overflow-hidden bg-black/90">
+    <div className="text-center text-[min(3vw,14px)] text-white py-1 font-medium">
+      {name}
+    </div>
+    <div className="w-full h-[1px] bg-white/30" />
+    <div className="px-2 py-1.5">
+      <div className="text-white text-[min(3vw,14px)] leading-tight text-center">
+        {clue.text}
+      </div>
+    </div>
+  </div>
+</div>
+```
 
-### 第四关
-- 网格大小：3x3
-- 起始位置：C1
-- 坏人数量：2 (A1和B2)
-- 线索链：
-  1. C1 -> A1：邻居数量线索
-  2. A1(坏人) -> C2：自首线索
-  3. B1 -> A2：游戏提示
-  4. A2 -> B2：状态提示
-  5. B2(坏人) -> B1：随机线索
-  6. C2 -> B2：区域线索
-  7. A3 -> B3：区域确认
-  8. B3 -> C3：外貌线索
-  9. C3 -> B2：特征线索
+##### 3.3 空位卡片样式
+- 使用特定图片 (200-blank-no.png)
+- 灰色背景
+- 不显示名字和线索
+- 默认完成状态
 
-### 第五关
-- 网格大小：4x3
-- 起始位置：C4
-- 坏人数量：3 (B2, C2, A4)
-- 特色：首次引入职业系统
-- 职业分布：
-  - 警察：小泉(A1)、阿魔(C1)、阿星(C2)
-  - 医生：阿玉(A3)、阿智(B4)
-  - 路人：其他角色
-- 线索链：
-  1. A1(警察) -> B1：区域安全线索
-  2. B1 -> A1：警察确认
-  3. C1(警察) -> A1：警察身份线索
-  4. A2 -> B2：感谢线索
-  5. B2(坏人) -> C2：随机线索
-  6. C2(坏人) -> A3：随机线索
-  7. A3(医生) -> B3：医生身份线索
-  8. B3 -> B2：坏人确认
-  9. C3 -> A4：区域线索
-  10. A4(坏人) -> B4：随机线索
-  11. B4(医生) -> C4：邻居确认
-  12. C4 -> B4：团队确认
+### 图片资源规则
 
-### 线索系统说明
-1. 线索类型：
-   - `direct`: 直接指出某个角色的身份
-   - `area`: 描述某个区域或行列的情况
-   - `behavior`: 描述可疑行为
-   - `relation`: 描述角色间的关系
+#### 1. 角色图片
+1. **普通市民** (`/src/assets/images/citizens/`)
+   - 命名格式: `[id]-[gender]-citizen-[feature]-[clothing].png`
+   - ID范围: 001-100
+   - 示例: `001-boy-citizen-beard-orangets.png`
 
-2. 线索生成规则：
-   - 好人只提供真实线索
-   - 坏人提供随机线索
-   - 每个角色的线索都经过精心设计，确保玩家可以通过逻辑推理找出坏人
+2. **职业角色** (`/src/assets/images/professions/`)
+   - 命名格式: `[id]-[profession]-[gender]-[feature].png`
+   - ID范围: 101-199
+   - 示例: `120-police-boy-hat.png`
 
-3. 线索链设计原则：
-   - 确保每条线索都有其作用
-   - 线索之间存在关联性
-   - 避免出现死胡同
-   - 保证有足够信息找出所有坏人
+3. **特殊图片**
+   - 空位图片: `200-blank-no.png`
+   - 位置: `/src/assets/images/professions/`
 
-### 关卡通关条件
-1. 找出所有坏人
-2. 翻开所有卡片
-3. 错误次数不超过3次
-4. 正确完成所有判定
+### 项目结构
+```
+src/
+├── assets/
+│   └── images/
+│       ├── citizens/      # 普通市民图片
+│       └── professions/   # 职业角色和特殊图片
+├── components/
+│   ├── CharacterCard/    # 角色卡片组件
+│   └── GameResultModal/  # 游戏结果弹窗
+├── data/
+│   └── levels/          # 关卡配置
+├── features/
+│   └── game/           # 游戏相关功能
+├── shared/
+│   └── types/         # 类型定义
+└── stores/           # 状态管理
+```
 
-### 2. 游戏界面功能
+### 关卡完成逻辑
+```typescript
+get isVictory() {
+  // 获取非空位卡片
+  const nonBlankCharacters = this.characters.filter(char => !char.identity.isBlank);
+  const revealedNonBlankPositions = Array.from(this.revealedPositions).filter(pos => {
+    const char = this.characters.find(c => c.position === pos);
+    return char && !char.identity.isBlank;
+  });
 
-#### 2.1 主菜单界面
-- 游戏启动后显示主菜单界面
-- 中央显示游戏Banner图片
-- "开始游戏"按钮：直接进入第一关
-- "选择关卡"按钮：显示已解锁的关卡列表（目前共6关）
+  return (
+    // 所有非空位卡片都被翻开
+    revealedNonBlankPositions.length === nonBlankCharacters.length &&
+    // 且找出了所有坏人
+    this.remainingImpostors === 0 &&
+    // 且失败次数未达上限
+    this.mistakeCount < this.maxMistakes
+  );
+}
+```
 
-#### 2.2 游戏设置
-游戏界面左上角的设置按钮(⚙️)提供以下功能：
-- 返回首页：返回主菜单界面
-- 重启关卡：重新开始当前关卡
-
-[继续...] 
+### 进度计算逻辑
+```typescript
+get progress() {
+  const nonBlankCharacters = this.characters.filter(char => !char.identity.isBlank);
+  const revealedNonBlankPositions = Array.from(this.revealedPositions).filter(pos => {
+    const char = this.characters.find(c => c.position === pos);
+    return char && !char.identity.isBlank;
+  });
+  
+  return {
+    revealed: revealedNonBlankPositions.length,  // 已翻开的非空位卡片数
+    total: nonBlankCharacters.length             // 总非空位卡片数
+  };
+}
+```

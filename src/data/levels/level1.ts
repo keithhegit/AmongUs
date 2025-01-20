@@ -1,5 +1,5 @@
 import { ClueUtils } from '@/utils/clueUtils';
-import type { LevelConfig } from '@/shared/types';
+import type { LevelConfig } from '@/shared/types/game';
 
 export const level1: LevelConfig = {
   id: 1,
@@ -8,7 +8,7 @@ export const level1: LevelConfig = {
   impostorCount: 2,
   characters: [
     {
-      id: 'char_A1',
+      id: '001',
       position: 'A1',
       name: '阿明',
       state: 'initial',
@@ -25,7 +25,7 @@ export const level1: LevelConfig = {
       }
     },
     {
-      id: 'char_A2',
+      id: '107',
       position: 'A2',
       name: '隆基',
       state: 'initial',
@@ -42,7 +42,7 @@ export const level1: LevelConfig = {
       }
     },
     {
-      id: 'char_A3',
+      id: '003',
       position: 'A3',
       name: '阿聪',
       state: 'initial',
@@ -53,7 +53,7 @@ export const level1: LevelConfig = {
       clue: ClueUtils.getRandomBadClue()
     },
     {
-      id: 'char_B1',
+      id: '012',
       position: 'B1',
       name: '阿强',
       state: 'initial',
@@ -64,7 +64,7 @@ export const level1: LevelConfig = {
       clue: ClueUtils.getRandomBadClue()
     },
     {
-      id: 'char_B2',
+      id: '022',
       position: 'B2',
       name: '阿杰',
       state: 'initial',
@@ -81,7 +81,7 @@ export const level1: LevelConfig = {
       }
     },
     {
-      id: 'char_B3',
+      id: '004',
       position: 'B3',
       name: '安娜',
       state: 'initial',
@@ -98,7 +98,7 @@ export const level1: LevelConfig = {
       }
     },
     {
-      id: 'char_C1',
+      id: '030',
       position: 'C1',
       name: '福贵',
       state: 'initial',
@@ -115,7 +115,7 @@ export const level1: LevelConfig = {
       }
     },
     {
-      id: 'char_C2',
+      id: '017',
       position: 'C2',
       name: '嘉宝',
       state: 'initial',
@@ -132,7 +132,7 @@ export const level1: LevelConfig = {
       }
     },
     {
-      id: 'char_C3',
+      id: '027',
       position: 'C3',
       name: '大明',
       state: 'initial',
@@ -148,5 +148,33 @@ export const level1: LevelConfig = {
         isUsed: false
       }
     }
-  ]
+  ],
+  clueFlow: {
+    steps: [
+      {
+        round: 1,
+        fromPosition: 'A2',
+        clueType: 'area',
+        targetInfo: {
+          position: 'C3'
+        }
+      },
+      {
+        round: 2,
+        fromPosition: 'C3',
+        clueType: 'relation',
+        targetInfo: {
+          position: 'B2'
+        }
+      },
+      {
+        round: 3,
+        fromPosition: 'B2',
+        clueType: 'relation',
+        targetInfo: {
+          position: 'C1'
+        }
+      }
+    ]
+  }
 }; 

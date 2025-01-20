@@ -1,5 +1,5 @@
 import { ClueUtils } from '@/utils/clueUtils';
-import type { LevelConfig } from '@/shared/types';
+import type { LevelConfig } from '@/shared/types/level';
 
 export const level2: LevelConfig = {
   id: 2,
@@ -8,7 +8,7 @@ export const level2: LevelConfig = {
   impostorCount: 1,
   characters: [
     {
-      id: 'char_A1',
+      id: '001',  // 小智：男性，耳机，玫红发
       position: 'A1',
       name: '小智',
       state: 'initial',
@@ -25,7 +25,7 @@ export const level2: LevelConfig = {
       }
     },
     {
-      id: 'char_B1',
+      id: '013',  // 小丽：女性，墨镜，棕色T恤
       position: 'B1',
       name: '小丽',
       state: 'initial',
@@ -42,7 +42,7 @@ export const level2: LevelConfig = {
       }
     },
     {
-      id: 'char_C1',
+      id: '024',  // 小红：女性，红帽子，红色工装
       position: 'C1',
       name: '小红',
       state: 'initial',
@@ -59,7 +59,7 @@ export const level2: LevelConfig = {
       }
     },
     {
-      id: 'char_A2',
+      id: '023',  // 张三：男性，灰发，棕色T恤
       position: 'A2',
       name: '张三',
       state: 'initial',
@@ -76,7 +76,7 @@ export const level2: LevelConfig = {
       }
     },
     {
-      id: 'char_B2',
+      id: '037',  // 小樱：女性，紫发，工装
       position: 'B2',
       name: '小樱',
       state: 'initial',
@@ -93,7 +93,7 @@ export const level2: LevelConfig = {
       }
     },
     {
-      id: 'char_C2',
+      id: '014',  // 李四：女性，棕发，玫红背心
       position: 'C2',
       name: '李四',
       state: 'initial',

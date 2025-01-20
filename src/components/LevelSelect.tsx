@@ -64,7 +64,7 @@ const LevelCard = ({ levelId, onClick }: LevelCardProps) => {
 };
 
 export const LevelSelect = () => {
-  const totalLevels = 20; // 总关卡数
+  const totalLevels = 7; // 暂时将总关卡数限制为7，直到实现更多关卡
 
   return (
     <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
