@@ -19,7 +19,7 @@ export const GameResultModal = observer(() => {
           {isVictory 
             ? isLastLevel 
               ? '所有关卡完成！\n你耗光了基夫的脑力，\n请期待新关卡更新！'
-              : '你成功找出了所有坏人！'
+              : '你成功找出了所有伪人！'
             : '很遗憾，你失败了。再试一次吧！'}
         </p>
         <div className="flex justify-end gap-4">

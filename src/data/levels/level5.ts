@@ -5,7 +5,7 @@ export const level5: LevelConfig = {
   id: 5,
   gridSize: { rows: 4, cols: 3 },
   startPosition: 'C4',
-  impostorCount: 3, // B2, C2, A4是坏人
+  impostorCount: 3, // B2, C2, A4是伪人
   characters: [
     {
       id: '120', // 男警察
@@ -17,7 +17,7 @@ export const level5: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '我和阿玉之间的人没有时间犯罪',
+        text: '我和阿玉之间的人没有时间作恶',
         type: 'area',
         targetPosition: 'B1',
         highlightNames: ['阿玉'],
@@ -136,7 +136,7 @@ export const level5: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: 'David是他那列唯一的坏蛋',
+        text: 'David是他那列唯一的伪人',
         type: 'area',
         targetPosition: 'B2',
         highlightNames: ['David'],
@@ -153,7 +153,7 @@ export const level5: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '第四排有一个坏蛋',
+        text: '第四排有一个伪人',
         type: 'area',
         targetPosition: 'A4',
         highlightNames: [],

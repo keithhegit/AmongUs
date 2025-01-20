@@ -33,10 +33,10 @@ class AudioService {
 
       // 初始化音效
       this.successSound = new Audio(successSoundUrl);
-      this.successSound.volume = 0.8; // 设置音效音量为80%
+      this.successSound.volume = 1.0; // 设置音效音量为100%
 
       this.failureSound = new Audio(failureSoundUrl);
-      this.failureSound.volume = 0.8; // 设置音效音量为80%
+      this.failureSound.volume = 1.0; // 设置音效音量为100%
     } catch (error) {
       console.error('Failed to initialize audio:', error);
     }

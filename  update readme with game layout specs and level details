@@ -1,0 +1,6 @@
+  backup-current-main      [m 68ece23 Merge remote-tracking branch 'origin/feature/level-7-newupdate'
+  backup-main              [m d8941f2 chore: resolve merge conflicts in node_modules
+  feat/vite-type-checker   [m 273b5c4 fix: use npx for vite build command
+  feature/level-7-newupdate[m b3d97b1 [[34morigin/feature/level-7-newupdate[m: ahead 1] chore: update gitignore, readme and index files
+  fix/vercel-build-config  [m 93df6e5 fix: Update Vercel configuration for Vite
+* [32mmain                     [m 749db9e [[34morigin/main[m] chore: remove package-lock.json for clean dependency management

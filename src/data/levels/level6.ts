@@ -70,7 +70,7 @@ export const level6: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: 'A列中有两个坏蛋',
+        text: 'A列中有两个伪人',
         type: 'area',
         targetPosition: '',
         highlightNames: [],
@@ -240,7 +240,7 @@ export const level6: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '第五行中有一个坏蛋',
+        text: '第五行中有一个伪人',
         type: 'area',
         targetPosition: '',
         highlightNames: [],

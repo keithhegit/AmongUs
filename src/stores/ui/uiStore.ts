@@ -3,7 +3,7 @@ import { makeAutoObservable } from 'mobx';
 export class UIStore {
   judgmentMode = {
     isActive: false,
-    type: 'good' as 'good' | 'evil'
+    type: 'good' as 'good' | 'impostor'
   };
 
   loading = false;
@@ -18,7 +18,7 @@ export class UIStore {
     makeAutoObservable(this);
   }
 
-  setJudgmentMode(isActive: boolean, type: 'good' | 'evil') {
+  setJudgmentMode(isActive: boolean, type: 'good' | 'impostor') {
     this.judgmentMode.isActive = isActive;
     this.judgmentMode.type = type;
   }

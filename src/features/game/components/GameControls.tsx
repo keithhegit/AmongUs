@@ -51,7 +51,7 @@ export const GameControls = ({
           className={cn(
             "w-14 h-14 rounded-full",
             "flex items-center justify-center text-2xl",
-            isGoodVote ? "bg-green-100" : "bg-red-100"
+            isGoodVote ? "bg-blue-100" : "bg-red-100"
           )}
         >
           {isGoodVote ? "😊" : "😈"}

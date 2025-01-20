@@ -52,13 +52,13 @@ export class GameUtils {
     if (isImpostor === votedAsImpostor) {
       return {
         isCorrect: true,
-        message: isImpostor ? '成功找出坏人！' : '正确判断了好人！'
+        message: isImpostor ? '成功找出伪人！' : '正确判断了人类！'
       };
     }
 
     return {
       isCorrect: false,
-      message: isImpostor ? '错过了一个坏人...' : '错误指控了好人...'
+      message: isImpostor ? '错过了一个伪人...' : '错误指控了人类...'
     };
   }
 } 

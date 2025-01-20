@@ -68,7 +68,7 @@ export const level2: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '我举报小樱是坏蛋记得换成抓捕模式',
+        text: '我举报小樱是伪人记得换成抓捕模式',
         type: 'direct',
         targetPosition: 'B2',
         highlightNames: ['小樱'],

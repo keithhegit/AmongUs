@@ -17,7 +17,7 @@ export const level4: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '我举报!我的同伙在B列，能少判我点吗?',
+        text: '我举报!我的同伙在B列，能放过我吗？',
         type: 'direct',
         targetPosition: 'C2',
         highlightNames: [],
@@ -51,7 +51,7 @@ export const level4: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '我邻居中只有一个人是坏蛋',
+        text: '我领居中只有一个伪人，左下角的女生是人类',
         type: 'area',
         targetPosition: 'A1',
         highlightNames: [],
@@ -68,7 +68,7 @@ export const level4: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '"时刻注意右上角的状态哦"，别放过任何一条线索!',
+        text: '天啊！我身边有2个伪人！',
         type: 'behavior',
         targetPosition: 'B2',
         highlightNames: [],
@@ -102,7 +102,7 @@ export const level4: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '我这行有1个坏蛋',
+        text: '我这行有1个伪人',
         type: 'area',
         targetPosition: 'B2',
         highlightNames: [],

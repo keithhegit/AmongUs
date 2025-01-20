@@ -70,7 +70,7 @@ export const GameOverModal = ({
                   </div>
                   <p className="text-gray-600">
                     {success 
-                      ? '你成功找出了所有的坏人！' 
+                      ? '你成功找出了所有的伪人！' 
                       : '很遗憾，错误次数太多了'}
                   </p>
                 </div>

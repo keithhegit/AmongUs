@@ -4,11 +4,20 @@ import type { Character } from '@/shared/types/character';
 import { cn } from '@/lib/utils';
 import citizensData from '@/features/game/data/citizens.json';
 import professionsData from '@/features/game/data/professions.json';
+import { useLongPress } from '@/hooks/use-long-press';
 
 interface CharacterCardProps {
   character: Character;
   isSelected: boolean;
   onClick: () => void;
+  style?: {
+    width?: number;
+    height?: number;
+    fontSize?: {
+      name: number;
+      text: number;
+    };
+  };
 }
 
 // 生成角色图片路径
@@ -44,7 +53,8 @@ function getCitizenImagePath(citizenId: string, position?: string): string {
 export const CharacterCard = observer(({ 
   character, 
   isSelected,
-  onClick 
+  onClick,
+  style = {}
 }: CharacterCardProps) => {
   const { name, position, state, identity, clue, id } = character;
   const [showZoomed, setShowZoomed] = useState(false);
@@ -84,28 +94,26 @@ export const CharacterCard = observer(({
   const shouldShowClue = clue && (state === 'revealed' || state === 'completed');
 
   // 长按处理
-  let pressTimer: NodeJS.Timeout;
-  
-  const handleMouseDown = () => {
-    if (identity.isBlank) return; // 空位不响应长按
-    pressTimer = setTimeout(() => {
+  const handleLongPress = () => {
+    if (state !== 'initial') { // 只有已翻开的卡片才能放大
       setShowZoomed(true);
-    }, 500);
+    }
   };
 
-  const handleMouseUp = () => {
-    clearTimeout(pressTimer);
-  };
+  const longPressEvent = useLongPress(handleLongPress, {
+    threshold: 500,
+    onFinish: (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
 
-  const handleTouchStart = () => {
-    if (identity.isBlank) return; // 空位不响应长按
-    pressTimer = setTimeout(() => {
-      setShowZoomed(true);
-    }, 500);
-  };
-
-  const handleTouchEnd = () => {
-    clearTimeout(pressTimer);
+  // 修改 getTextSize 函数
+  const getTextSize = (type: 'name' | 'text') => {
+    if (style.fontSize) {
+      return `${style.fontSize[type]}px`;
+    }
+    return undefined;
   };
 
   // 如果是空位卡片，使用特殊样式
@@ -113,12 +121,17 @@ export const CharacterCard = observer(({
     return (
       <div 
         className={cn(
-          "relative w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md",
+          "relative aspect-[3/4] rounded-lg overflow-hidden shadow-md",
           "bg-gray-100"  // 空位使用灰色背景
         )}
+        style={{
+          width: style.width,
+          height: style.height
+        }}
       >
         {/* 位置标识 - 左上角 */}
-        <div className="absolute top-0 left-0 bg-black/80 text-white px-1.5 py-0.5 text-[min(3vw,14px)] rounded-br">
+        <div className="absolute top-0 left-0 bg-black/80 text-white px-1.5 py-0.5 rounded-br"
+             style={{ fontSize: getTextSize('text') }}>
           {position}
         </div>
         <div className="w-full h-full flex items-center justify-center">
@@ -136,26 +149,28 @@ export const CharacterCard = observer(({
     <>
       <div 
         className={cn(
-          "relative w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md",
+          "relative aspect-[3/4] rounded-lg overflow-hidden shadow-md",
           "cursor-pointer transition-all hover:shadow-lg hover:scale-105",
           gender === 'boy' ? "bg-blue-100" : "bg-pink-100",
           isSelected && "ring-2 ring-blue-500"
         )}
+        style={{
+          width: style.width,
+          height: style.height
+        }}
         onClick={onClick}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+        {...longPressEvent}
       >
         {/* 位置标识 - 左上角 */}
-        <div className="absolute top-0 left-0 bg-black/80 text-white px-1.5 py-0.5 text-[min(3vw,14px)] rounded-br">
+        <div className="absolute top-0 left-0 bg-black/80 text-white px-1.5 py-0.5 rounded-br"
+             style={{ fontSize: getTextSize('text') }}>
           {position}
         </div>
 
         {/* 身份标识 - 右上角 */}
         {state !== 'initial' && (
-          <div className="absolute top-0 right-0 text-[min(8vw,40px)] leading-none">
+          <div className="absolute top-0 right-0 leading-none"
+               style={{ fontSize: getTextSize('text'), transform: 'scale(3)', transformOrigin: 'top right' }}>
             {identity.isImpostor ? '😈' : '😊'}
           </div>
         )}
@@ -172,7 +187,8 @@ export const CharacterCard = observer(({
               />
             </div>
             <div className="absolute bottom-0 w-full bg-black/70 py-1">
-              <div className="text-white text-center text-[min(3vw,14px)]">
+              <div className="text-white text-center"
+                   style={{ fontSize: getTextSize('name') }}>
                 {name}
               </div>
             </div>
@@ -197,12 +213,14 @@ export const CharacterCard = observer(({
                 "w-full h-[70%] rounded-b overflow-hidden",
                 identity.isImpostor ? "bg-red-600/90" : "bg-black/90"
               )}>
-                <div className="text-center text-[min(3vw,14px)] text-white py-1 font-medium">
+                <div className="text-center text-white py-1 font-medium"
+                     style={{ fontSize: getTextSize('name') }}>
                   {name}
                 </div>
                 <div className="w-full h-[1px] bg-white/30" />
                 <div className="px-2 py-1.5">
-                  <div className="text-white text-[min(3vw,14px)] leading-tight text-center">
+                  <div className="text-white leading-tight text-center"
+                       style={{ fontSize: getTextSize('text') }}>
                     {clue.text}
                   </div>
                 </div>
@@ -218,12 +236,53 @@ export const CharacterCard = observer(({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
           onClick={() => setShowZoomed(false)}
         >
-          <div className="relative w-4/5 max-w-md aspect-[3/4]">
-            <img 
-              src={imagePath}
-              alt={name}
-              className="w-full h-full object-contain"
-            />
+          <div className="relative w-4/5 max-w-md aspect-[3/4] bg-white rounded-lg overflow-hidden">
+            {state === 'initial' ? (
+              // 未翻开状态的放大显示
+              <>
+                <div className="h-full flex items-center justify-center">
+                  <img 
+                    src={imagePath}
+                    alt={name}
+                    className="w-[85%] h-[85%] object-contain"
+                  />
+                </div>
+                <div className="absolute bottom-0 w-full bg-black/70 py-1">
+                  <div className="text-white text-center text-2xl">
+                    {name}
+                  </div>
+                </div>
+              </>
+            ) : (
+              // 已翻开状态的放大显示
+              <div className="h-full flex flex-col p-4">
+                <div className="w-full h-[30%] flex items-center justify-center bg-white/50 rounded-t">
+                  <div className="w-[85%] h-[85%]">
+                    <img 
+                      src={imagePath}
+                      alt={name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+                {shouldShowClue && (
+                  <div className={cn(
+                    "w-full h-[70%] rounded-b overflow-hidden",
+                    identity.isImpostor ? "bg-red-600/90" : "bg-black/90"
+                  )}>
+                    <div className="text-center text-2xl text-white py-2 font-medium">
+                      {name}
+                    </div>
+                    <div className="w-full h-[1px] bg-white/30" />
+                    <div className="px-4 py-3">
+                      <div className="text-white text-xl leading-relaxed text-center">
+                        {clue.text}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}

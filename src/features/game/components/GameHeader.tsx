@@ -49,7 +49,7 @@ export const GameHeader = observer(() => {
   };
 
   return (
-    <header className="absolute top-0 left-0 w-full h-[164px] bg-[#499DFF] shadow-[0_4px_0_#2364B6] z-50">
+    <header className="absolute top-0 left-0 w-full h-[123px] bg-[#499DFF] shadow-[0_4px_0_#2364B6] z-50">
       {/* 齿轮按钮 */}
       <div className="absolute w-[34px] h-[34px] left-[12px] top-[12px]">
         <button 
@@ -81,7 +81,7 @@ export const GameHeader = observer(() => {
       </div>
 
       {/* 关卡信息 */}
-      <div className="absolute top-[57px] left-[152px] w-[72px] h-[27px]">
+      <div className="absolute top-[38px] left-[152px] w-[72px] h-[27px]">
         {/* 文字层 */}
         <div className="relative w-full h-full flex items-center justify-center">
           <span 
@@ -95,8 +95,8 @@ export const GameHeader = observer(() => {
         </div>
       </div>
 
-      {/* 坏人计数器 */}
-      <div className="absolute bottom-[12px] left-[12px] h-[32px]">
+      {/* 伪人计数器 */}
+      <div className="absolute bottom-[8px] left-[12px] h-[32px]">
         <div className="flex items-center h-full bg-white rounded-[16px] px-4 border-2 border-black">
           <span className="text-2xl mr-2">😈</span>
           <span className="font-black text-xl">{currentLevel.impostorCount}</span>
@@ -104,7 +104,7 @@ export const GameHeader = observer(() => {
       </div>
 
       {/* 失败计数器 */}
-      <div className="absolute bottom-[12px] right-[12px] h-[32px]">
+      <div className="absolute bottom-[8px] right-[12px] h-[32px]">
         <div className="flex items-center h-full gap-1">
           {Array(maxMistakes).fill(0).map((_, index) => (
             <div 
@@ -125,7 +125,7 @@ export const GameHeader = observer(() => {
       </div>
 
       {/* 进度条 */}
-      <div className="absolute bottom-[12px] left-1/2 -translate-x-1/2 w-[140px]">
+      <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[140px]">
         <div className="relative w-[140px] h-[32px] rounded-[16px] border-2 border-black overflow-hidden">
           {/* 背景 */}
           <div className="absolute inset-0 bg-[#A6A6A6]" />

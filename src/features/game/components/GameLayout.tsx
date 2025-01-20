@@ -7,6 +7,8 @@ import { GameResultModal } from './GameResultModal';
 import { gameStore } from '@/stores';
 import type { Character } from '@/shared/types/game';
 import { audioService } from '@/shared/services/AudioService';
+import { useGridSize } from '@/hooks/use-grid-size';
+import { cn } from '@/lib/utils';
 
 export const GameLayout = observer(() => {
   const navigate = useNavigate();
@@ -46,40 +48,70 @@ export const GameLayout = observer(() => {
     return a.position[0].localeCompare(b.position[0]);
   });
 
-  // 计算网格列数
+  // 计算网格大小
   const gridCols = Math.max(
     ...sortedCharacters.map(c => c.position[0].charCodeAt(0) - 'A'.charCodeAt(0) + 1)
   );
+  const gridRows = Math.max(
+    ...sortedCharacters.map(c => parseInt(c.position.slice(1)))
+  );
 
-  // 根据列数决定网格类名
-  const gridColsClass = `grid-cols-${gridCols}`;
+  // 使用自适应hook
+  const { cardWidth, cardHeight, fontSize } = useGridSize({
+    columns: gridCols,
+    rows: gridRows
+  });
 
   return (
-    <div className="relative min-h-screen pb-[120px] flex flex-col">
-      {/* Safe Area Container */}
-      <div className="w-full mx-auto px-2 flex-1">
-        {/* 游戏状态 */}
-        <div className="mb-4 text-center">
-          <div className="text-lg font-medium text-gray-700">
-            当前回合: {gameStore.currentRound + 1}
-          </div>
-        </div>
+    <div className="fixed inset-0 flex flex-col bg-gray-50">
+      {/* 头部区域 123px (164px * 0.75) */}
+      <header className="h-[123px] flex-shrink-0 flex flex-col justify-center bg-[#499DFF] shadow-md">
+        {/* 头部内容保持不变 */}
+      </header>
 
-        {/* 角色网格 */}
-        <div className={`grid ${gridColsClass} gap-1.5 mt-[164px]`}>
+      {/* 主内容区域 - 卡片网格 */}
+      <main className="flex-1 flex items-center justify-center overflow-hidden">
+        {/* 卡片网格容器 */}
+        <div 
+          className={cn(
+            "grid auto-rows-max",
+            "mx-auto px-2", // 水平内边距
+            "transform-gpu" // 启用GPU加速
+          )}
+          style={{
+            gap: '4px',
+            gridTemplateColumns: `repeat(${gridCols}, ${cardWidth}px)`,
+            width: 'fit-content'
+          }}
+        >
           {sortedCharacters.map(character => (
             <CharacterCard
               key={character.position}
               character={character}
               isSelected={character.state !== 'initial'}
               onClick={() => handleCharacterClick(character.position)}
+              style={{
+                width: cardWidth,
+                height: cardHeight,
+                fontSize: fontSize
+              }}
             />
           ))}
         </div>
-      </div>
+      </main>
 
-      {/* 底部控制栏 */}
-      <RoleToggle />
+      {/* 底部区域 */}
+      <footer className="h-[107px] flex-shrink-0 flex flex-col justify-center"> {/* 27px + 70px + 10px */}
+        <div className="h-[27px] flex items-center justify-center">
+          {/* 基础内容 */}
+        </div>
+        <div className="flex items-center justify-center">
+          {/* 判断按钮区域 */}
+          <div className="h-[70px] mt-[10px]">
+            <RoleToggle />
+          </div>
+        </div>
+      </footer>
 
       {/* 结算弹窗 */}
       <GameResultModal />
