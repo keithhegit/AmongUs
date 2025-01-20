@@ -9,8 +9,9 @@ import { level7 } from './level7';
 import { level8 } from './level8';
 import { level9 } from './level9';
 import { level10 } from './level10';
+import { levelSpecial } from './levelSpecial';
 
-export const levels: LevelConfig[] = [
+const normalLevels: LevelConfig[] = [
   level1,
   level2,
   level3,
@@ -23,5 +24,10 @@ export const levels: LevelConfig[] = [
   level10
 ];
 
-export { level1, level2, level3, level4, level5, level6, level7, level8, level9, level10 };
-export default levels;
+export { level1, level2, level3, level4, level5, level6, level7, level8, level9, level10, levelSpecial };
+export { normalLevels as default };
+
+export const levels = {
+  // ... existing code ...
+  special: levelSpecial
+};

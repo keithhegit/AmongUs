@@ -3,20 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useUIStore } from '@/store';
 import { gameStore } from '@/stores';
-import { levels } from '@/data/levels';
+import { levels, level1, level2, level3, level4, level5, level6, level7, level8, level9, level10, levelSpecial } from '@/data/levels';
 import type { LevelConfig } from '@/shared/types/game';
 import clsx from 'clsx';
 import mainBg from '../../../assets/images/main.png';
-import level1 from '../../../assets/images/levelcard/level1.png';
-import level2 from '../../../assets/images/levelcard/level2.png';
-import level3 from '../../../assets/images/levelcard/level3.png';
-import level4 from '../../../assets/images/levelcard/level4.png';
-import level5 from '../../../assets/images/levelcard/level5.png';
-import level6 from '../../../assets/images/levelcard/level6.png';
-import level7 from '../../../assets/images/levelcard/level7.png';
-import level8 from '../../../assets/images/levelcard/level8.png';
-import level9 from '../../../assets/images/levelcard/level9.png';
-import level10 from '../../../assets/images/levelcard/level10.png';
+import level1Img from '../../../assets/images/levelcard/level1.png';
+import level2Img from '../../../assets/images/levelcard/level2.png';
+import level3Img from '../../../assets/images/levelcard/level3.png';
+import level4Img from '../../../assets/images/levelcard/level4.png';
+import level5Img from '../../../assets/images/levelcard/level5.png';
+import level6Img from '../../../assets/images/levelcard/level6.png';
+import level7Img from '../../../assets/images/levelcard/level7.png';
+import level8Img from '../../../assets/images/levelcard/level8.png';
+import level9Img from '../../../assets/images/levelcard/level9.png';
+import level10Img from '../../../assets/images/levelcard/level10.png';
+import levelSpecialImg from '../../../assets/images/levelcard/levelspecial.png';
 import levelBottom from '../../../assets/images/levelbottom.png';
 import backBtn from '@/assets/images/Triangle-Arrow-Turn-Backward.png';
 import { audioService } from '@/shared/services/AudioService';
@@ -24,17 +25,19 @@ import startGameBtn from '@/assets/images/ui/start-game-btn.png';
 import selectLevelBtn from '@/assets/images/ui/select-level-btn.png';
 
 const levelCards = [
-  level1,
-  level2,
-  level3,
-  level4,
-  level5,
-  level6,
-  level7,
-  level8,
-  level9,
-  level10
+  level1Img,
+  level2Img,
+  level3Img,
+  level4Img,
+  level5Img,
+  level6Img,
+  level7Img,
+  level8Img,
+  level9Img,
+  level10Img
 ];
+
+const normalLevels = [level1, level2, level3, level4, level5, level6, level7, level8, level9, level10];
 
 export const MainMenu = observer(() => {
   const navigate = useNavigate();
@@ -54,7 +57,7 @@ export const MainMenu = observer(() => {
 
   const handleStartGame = () => {
     // 使用第一关配置初始化游戏
-    const levelConfig = levels[0];
+    const levelConfig = normalLevels[0];
     if (!levelConfig) {
       console.error('关卡配置不存在');
       return;
@@ -74,7 +77,7 @@ export const MainMenu = observer(() => {
   };
 
   const handleLevelSelect = (levelIndex: number) => {
-    const levelConfig = levels[levelIndex];
+    const levelConfig = normalLevels[levelIndex];
     if (!levelConfig) {
       console.error('关卡配置不存在');
       return;
@@ -216,21 +219,40 @@ export const MainMenu = observer(() => {
                   ))}
                 </div>
 
-                {/* Fourth Row */}
+                {/* Fourth Row - Level 10 and Special Level */}
                 <div className="flex gap-[10px]">
-                  {levelCards.slice(9).map((cardImage, index) => (
-                    <button
-                      key={index + 9}
-                      onClick={() => handleLevelSelect(index + 9)}
-                      className="w-[110px] h-[85px] cursor-pointer"
-                    >
-                      <img 
-                        src={cardImage} 
-                        alt={`Level ${index + 10}`}
-                        className="w-full h-full object-contain"
-                      />
-                    </button>
-                  ))}
+                  {/* Level 10 */}
+                  <button
+                    onClick={() => handleLevelSelect(9)}
+                    className="w-[110px] h-[85px] cursor-pointer"
+                  >
+                    <img 
+                      src={level10Img} 
+                      alt="Level 10"
+                      className="w-full h-full object-contain"
+                    />
+                  </button>
+                  {/* Special Level */}
+                  <button
+                    onClick={() => {
+                      try {
+                        gameStore.initLevel(levelSpecial);
+                        console.log('Special level initialized, navigating...');
+                        navigate('/game');
+                      } catch (error) {
+                        console.error('Failed to initialize special level:', error);
+                      }
+                    }}
+                    className="w-[110px] h-[85px] cursor-pointer"
+                  >
+                    <img 
+                      src={levelSpecialImg} 
+                      alt="Special Level"
+                      className="w-full h-full object-contain"
+                    />
+                  </button>
+                  {/* Empty space for alignment */}
+                  <div className="w-[110px] h-[85px]"></div>
                 </div>
               </div>
             </div>
