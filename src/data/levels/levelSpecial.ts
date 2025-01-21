@@ -37,7 +37,7 @@ export const levelSpecial: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '8个有胡子的男中有5个是好人',
+        text: '所有有胡子的男中有6个是人类',
         type: 'relation',
         targetPosition: '',
         highlightNames: [],
@@ -350,7 +350,7 @@ export const levelSpecial: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '左半部分列比右半部分多一个坏人',
+        text: '右半部分的列比左半部分多一个伪人',
         type: 'area',
         targetPosition: '',
         highlightNames: [],
@@ -576,7 +576,7 @@ export const levelSpecial: LevelConfig = {
         isRevealed: false
       },
       clue: {
-        text: '这些行上半部分所有坏人都是好人',
+        text: '家明吴凯培钒仨都像人类',
         type: 'area',
         targetPosition: '',
         highlightNames: [],
